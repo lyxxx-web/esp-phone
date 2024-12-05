@@ -1,7 +1,7 @@
-SET(SOURCES screens/ui_statelight.c
+SET(SOURCES screens/ui_stateLight.c
     screens/ui_dial.c
     screens/ui_answer.c
-    screens/ui_statedark.c
+    screens/ui_stateDark.c
     screens/ui_oncall.c
     ui.c
     components/ui_comp_hook.c

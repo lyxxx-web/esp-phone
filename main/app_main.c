@@ -21,7 +21,7 @@ void app_main(void)
         .flags = {
             .buff_dma = true,
             .buff_spiram = false,
-            .sw_rotate = false,
+            .sw_rotate = true,
         }
     };
     bsp_display_start_with_config(&cfg);
