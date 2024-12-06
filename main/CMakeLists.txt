@@ -7,10 +7,12 @@ idf_component_register(
         "./ui"
         "./ui/screens"
         "./ui/fonts"
-        "./ui/images" 
+        "./ui/images"
+        "./app" 
 
     INCLUDE_DIRS 
         "."
         "./ui"
+        "./app" 
     )
 

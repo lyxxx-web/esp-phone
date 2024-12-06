@@ -5,11 +5,16 @@
 
 #include "ui.h"
 #include "ui_helpers.h"
+#include "esp_log.h"
+#include <stdio.h>
 
+static const char *TAG = "ui";
+static int dial_elapsed_sec;
+
+static lv_timer_t *timer_dial = NULL;
 ///////////////////// VARIABLES ////////////////////
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay);
 void turnON_Animation(lv_obj_t * TargetObject, int delay);
-
 
 // SCREEN: ui_stateLight
 void ui_stateLight_screen_init(void);
@@ -20,10 +25,13 @@ lv_obj_t * ui_lightBattery;
 lv_obj_t * ui_lightWifi;
 lv_obj_t * ui_lightMobile;
 
-
 // SCREEN: ui_dial
 void ui_dial_screen_init(void);
+void ui_event_dialKeyboard(lv_event_t * e);
+void ui_event_dialBtnans(lv_event_t * e);
+char dialTxt[23] = "";
 lv_obj_t * ui_dial;
+lv_obj_t * ui_dialTxt;
 lv_obj_t * ui_dialKeyboard;
 lv_obj_t * ui_dialkbNum1;
 lv_obj_t * ui_dialkbBtn1;
@@ -73,10 +81,10 @@ lv_obj_t * ui_dialkbLabel23;
 lv_obj_t * ui_dialBtnAnswer;
 lv_obj_t * ui_dialBtnBack;
 
-
 // SCREEN: ui_answer
 void ui_answer_screen_init(void);
 void ui_event_answer(lv_event_t * e);
+void ui_event_ansBtnDec(lv_event_t * e);
 lv_obj_t * ui_answer;
 lv_obj_t * ui_ansFuc;
 lv_obj_t * ui_ansFucmute;
@@ -151,7 +159,6 @@ lv_obj_t * ui_ansKbNumj;
 lv_obj_t * ui_ansKbBtnj;
 lv_obj_t * ui_ansKbLabelj;
 
-
 // SCREEN: ui_stateDark
 void ui_stateDark_screen_init(void);
 lv_obj_t * ui_stateDark;
@@ -160,7 +167,6 @@ lv_obj_t * ui_darkTime;
 lv_obj_t * ui_darkBattery;
 lv_obj_t * ui_darkWifi;
 lv_obj_t * ui_darkMobile;
-
 
 // SCREEN: ui_oncall
 void ui_oncall_screen_init(void);
@@ -188,12 +194,27 @@ const lv_img_dsc_t * ui_imgset_1496073666[1] = {&ui_img_126583460};
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
-    #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
+#error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
 #endif
 #if LV_COLOR_16_SWAP !=0
-    #error "LV_COLOR_16_SWAP should be 0 to match SquareLine Studio's settings"
+#error "LV_COLOR_16_SWAP should be 0 to match SquareLine Studio's settings"
 #endif
+///////////////////// CALLBACK FUNCTIONs ////////////////////
 
+static void dial_time_cb(lv_timer_t *tmr)
+{
+    int hours = (dial_elapsed_sec) / 3600;
+    int minutes = ((dial_elapsed_sec) % 3600) / 60;
+    int seconds = (dial_elapsed_sec) % 60;
+    char time_str[16];
+    if (hours) {
+        snprintf(time_str, sizeof(time_str), "%02d:%02d:%02d", hours, minutes, seconds);
+    } else {
+        snprintf(time_str, sizeof(time_str), "%02d:%02d", minutes, seconds);
+    }
+    lv_label_set_text(ui_ansLabelTime, time_str);
+    dial_elapsed_sec++;
+}
 ///////////////////// ANIMATIONS ////////////////////
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay)
 {
@@ -247,33 +268,109 @@ void ui_event_dial(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_SCREEN_LOAD_START)
-    {
+    if (event_code == LV_EVENT_SCREEN_LOAD_START) {
         lv_obj_set_parent(ui_dial, ui_stateLight);
+    }
+}
+void ui_event_dialKeyboard(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    int keyboard_number = (int)lv_event_get_user_data(e);
+    if (event_code == LV_EVENT_PRESSED) {
+        // ESP_LOGI(TAG, "keyboard_number is %d", keyboard_number);
+        char buffer[23];
+        strcpy(buffer, dialTxt);
+        switch (keyboard_number) {
+        case 0:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "0");
+            break;
+        case 1:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "1");
+            break;
+        case 2:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "2");
+            break;
+        case 3:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "3");
+            break;
+        case 4:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "4");
+            break;
+        case 5:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "5");
+            break;
+        case 6:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "6");
+            break;
+        case 7:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "7");
+            break;
+        case 8:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "8");
+            break;
+        case 9:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "9");
+            break;
+        case 10:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "*");
+            break;
+        case 11:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "#");
+            break;
+        case 12:
+            size_t len = strlen(dialTxt);
+            if (len) {
+                dialTxt[len - 2] = '\0';
+            }
+            break;
+        default:
+            break;
+        }
+        lv_label_set_text(ui_dialTxt, dialTxt);
+    }
+}
+void ui_event_dialBtnans(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if (event_code == LV_EVENT_PRESSED) {
+        _ui_screen_change(&ui_answer, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_answer_screen_init);
     }
 }
 void ui_event_answer(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_SCREEN_LOAD_START)
-    {
+    if (event_code == LV_EVENT_SCREEN_LOAD_START) {
         lv_obj_set_parent(ui_answer, ui_stateDark);
+        timer_dial = lv_timer_create(dial_time_cb, 1000, NULL);
+        dial_time_cb(timer_dial);
     }
-    if(event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_PRESSED) {
         _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    }
+}
+void ui_event_ansBtnDec(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if (event_code == LV_EVENT_PRESSED) {
+        _ui_screen_change(&ui_dial, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_dial_screen_init);
+        lv_timer_del(timer_dial);
+        dial_elapsed_sec = 0;
     }
 }
 void ui_event_ansBtnmute(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
+    if (event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
         turnON_Animation(ui_slash, 0);
     }
-    if(event_code == LV_EVENT_VALUE_CHANGED &&  !lv_obj_has_state(target, LV_STATE_CHECKED)) {
+    if (event_code == LV_EVENT_VALUE_CHANGED &&  !lv_obj_has_state(target, LV_STATE_CHECKED)) {
         turnOFF_Animation(ui_slash, 0);
     }
 }
@@ -281,7 +378,7 @@ void ui_event_ansBtnkeypad(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
+    if (event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
         _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
@@ -290,11 +387,10 @@ void ui_event_oncall(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_SCREEN_LOAD_START)
-    {
+    if (event_code == LV_EVENT_SCREEN_LOAD_START) {
         lv_obj_set_parent(ui_oncall, ui_stateDark);
     }
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED) {
         _ui_flag_modify(ui_oncallFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_oncallMsg, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
@@ -303,7 +399,7 @@ void ui_event_Image1(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_PRESSED) {
         _ui_flag_modify(ui_oncallFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_oncallMsg, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
     }
@@ -324,5 +420,5 @@ void ui_init(void)
     ui_stateDark_screen_init();
     ui_oncall_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_answer);
+    lv_disp_load_scr(ui_dial);
 }

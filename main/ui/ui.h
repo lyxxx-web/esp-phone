@@ -27,7 +27,11 @@ extern lv_obj_t * ui_lightWifi;
 extern lv_obj_t * ui_lightMobile;
 // SCREEN: ui_dial
 void ui_dial_screen_init(void);
+void ui_event_dialKeyboard(lv_event_t * e);
+void ui_event_dialBtnans(lv_event_t * e);
+extern char dialTxt[23];
 extern lv_obj_t * ui_dial;
+extern lv_obj_t * ui_dialTxt;
 extern lv_obj_t * ui_dialKeyboard;
 extern lv_obj_t * ui_dialkbNum1;
 extern lv_obj_t * ui_dialkbBtn1;
@@ -79,6 +83,7 @@ extern lv_obj_t * ui_dialBtnBack;
 // SCREEN: ui_answer
 void ui_answer_screen_init(void);
 void ui_event_answer(lv_event_t * e);
+void ui_event_ansBtnDec(lv_event_t * e);
 extern lv_obj_t * ui_answer;
 extern lv_obj_t * ui_ansFuc;
 extern lv_obj_t * ui_ansFucmute;

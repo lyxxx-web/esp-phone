@@ -4,11 +4,20 @@
 // Project name: ESPPHONE
 
 #include "../ui.h"
-
+#include <stdio.h>
 void ui_dial_screen_init(void)
 {
     ui_dial = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_dial, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_dialTxt = lv_label_create(ui_dial);
+    lv_obj_set_width(ui_dialTxt, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_dialTxt, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_style_outline_color(ui_dialTxt, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_width(ui_dialTxt, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_align(ui_dialTxt, LV_ALIGN_CENTER, 0, -450);
+    lv_label_set_text(ui_dialTxt, dialTxt);
+    lv_obj_set_style_text_font(ui_dialTxt, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_dialKeyboard = lv_obj_create(ui_dial);
     lv_obj_set_width(ui_dialKeyboard, 600);
@@ -521,4 +530,19 @@ void ui_dial_screen_init(void)
     lv_obj_set_style_bg_img_src(ui_dialBtnBack, &ui_img_backspace_png, LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_img_opa(ui_dialBtnBack, 220, LV_PART_MAIN | LV_STATE_PRESSED);
 
+    lv_obj_add_event_cb(ui_dialkbBtn0, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)0);
+    lv_obj_add_event_cb(ui_dialkbBtn1, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)1);
+    lv_obj_add_event_cb(ui_dialkbBtn2, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)2);
+    lv_obj_add_event_cb(ui_dialkbBtn3, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)3);
+    lv_obj_add_event_cb(ui_dialkbBtn4, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)4);
+    lv_obj_add_event_cb(ui_dialkbBtn5, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)5);
+    lv_obj_add_event_cb(ui_dialkbBtn6, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)6);
+    lv_obj_add_event_cb(ui_dialkbBtn7, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)7);
+    lv_obj_add_event_cb(ui_dialkbBtn8, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)8);
+    lv_obj_add_event_cb(ui_dialkbBtn9, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)9);
+    lv_obj_add_event_cb(ui_dialkbBtnx, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)10);
+    lv_obj_add_event_cb(ui_dialkbBtnj, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)11);
+    lv_obj_add_event_cb(ui_dialBtnBack, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)12);
+
+    lv_obj_add_event_cb(ui_dialBtnAnswer, ui_event_dialBtnans, LV_EVENT_PRESSED, NULL);
 }
