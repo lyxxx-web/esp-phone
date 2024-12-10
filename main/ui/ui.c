@@ -40,51 +40,6 @@ lv_obj_t * ui_dial_kb_label_bottom[9];
 lv_obj_t * ui_dial;
 lv_obj_t * ui_dialTxt;
 lv_obj_t * ui_dialKeyboard;
-lv_obj_t * ui_dialkbNum1;
-lv_obj_t * ui_dialkbBtn1;
-lv_obj_t * ui_dialkbLabel1;
-lv_obj_t * ui_dialkbNum2;
-lv_obj_t * ui_dialkbBtn2;
-lv_obj_t * ui_dialkbLabel2;
-lv_obj_t * ui_dialkbLabel3;
-lv_obj_t * ui_dialkbNum3;
-lv_obj_t * ui_dialkbBtn3;
-lv_obj_t * ui_dialkbLabel5;
-lv_obj_t * ui_dialkbLabel4;
-lv_obj_t * ui_dialkbNum4;
-lv_obj_t * ui_dialkbBtn4;
-lv_obj_t * ui_dialkbLabel7;
-lv_obj_t * ui_dialkbLabel6;
-lv_obj_t * ui_dialkbNum5;
-lv_obj_t * ui_dialkbBtn5;
-lv_obj_t * ui_dialkbLabel9;
-lv_obj_t * ui_dialkbLabel10;
-lv_obj_t * ui_dialkbNum6;
-lv_obj_t * ui_dialkbBtn6;
-lv_obj_t * ui_dialkbLabel11;
-lv_obj_t * ui_dialkbLabel12;
-lv_obj_t * ui_dialkbNum7;
-lv_obj_t * ui_dialkbBtn7;
-lv_obj_t * ui_dialkbLabel13;
-lv_obj_t * ui_dialkbLabel14;
-lv_obj_t * ui_dialkbNum8;
-lv_obj_t * ui_dialkbBtn8;
-lv_obj_t * ui_dialkbLabel15;
-lv_obj_t * ui_dialkbLabel16;
-lv_obj_t * ui_dialkbNum9;
-lv_obj_t * ui_dialkbBtn9;
-lv_obj_t * ui_dialkbLabel17;
-lv_obj_t * ui_dialkbLabel18;
-lv_obj_t * ui_dialkbNumx;
-lv_obj_t * ui_dialkbBtnx;
-lv_obj_t * ui_dialkbLabel19;
-lv_obj_t * ui_dialkbNum0;
-lv_obj_t * ui_dialkbBtn0;
-lv_obj_t * ui_dialkbLabel21;
-lv_obj_t * ui_dialkbLabel22;
-lv_obj_t * ui_dialkbNumj;
-lv_obj_t * ui_dialkbBtnj;
-lv_obj_t * ui_dialkbLabel23;
 lv_obj_t * ui_dialFucBtn;
 lv_obj_t * ui_dialFucSpa1;
 lv_obj_t * ui_dialFucSpa2;
@@ -294,38 +249,11 @@ void ui_event_dialKeyboard(lv_event_t * e)
         char buffer[23];
         strcpy(buffer, dialTxt);
         switch (keyboard_number) {
-        case 0:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "0");
-            break;
-        case 1:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "1");
-            break;
-        case 2:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "2");
-            break;
-        case 3:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "3");
-            break;
-        case 4:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "4");
-            break;
-        case 5:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "5");
-            break;
-        case 6:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "6");
-            break;
-        case 7:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "7");
-            break;
-        case 8:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "8");
-            break;
         case 9:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "9");
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "*");
             break;
         case 10:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "*");
+            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "0");
             break;
         case 11:
             snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "#");
@@ -337,6 +265,7 @@ void ui_event_dialKeyboard(lv_event_t * e)
             }
             break;
         default:
+            snprintf(dialTxt, sizeof(dialTxt), "%s %d", buffer, keyboard_number + 1);
             break;
         }
         lv_label_set_text(ui_dialTxt, dialTxt);

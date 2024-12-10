@@ -9,6 +9,7 @@
 
 #define BTN_ANS_SIZE LV_HOR_RES * 0.21
 #define BTN_BACK_SIZE LV_HOR_RES * 0.11
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 static lv_style_t style_kb_num;
 static lv_style_t style_kb_btn;
@@ -26,12 +27,12 @@ static void ui_dial_style_init(void)
     lv_style_set_border_width(&style_kb_num, 0);
 
     lv_style_init(&style_kb_btn);
-    lv_style_set_width(style_kb_btn, KB_BTN_SIZE);
-    lv_style_set_height(style_kb_btn, KB_BTN_SIZE);
-    lv_style_set_align(style_kb_btn, LV_ALIGN_CENTER);
-    lv_style_set_radius(style_kb_btn, 100);
-    lv_style_set_bg_color(style_kb_btn, lv_color_hex(0xE5E5E5));
-    lv_style_set_bg_opa(style_kb_btn, 255);
+    lv_style_set_width(&style_kb_btn, KB_BTN_SIZE);
+    lv_style_set_height(&style_kb_btn, KB_BTN_SIZE);
+    lv_style_set_align(&style_kb_btn, LV_ALIGN_CENTER);
+    lv_style_set_radius(&style_kb_btn, 100);
+    lv_style_set_bg_color(&style_kb_btn, lv_color_hex(0xE5E5E5));
+    lv_style_set_bg_opa(&style_kb_btn, 255);
 }
 
 static void ui_dial_keyboard_init(void)
@@ -51,239 +52,67 @@ static void ui_dial_keyboard_init(void)
     lv_obj_set_style_pad_row(ui_dialKeyboard, KB_NUM_SIZE * 0.18, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_dialKeyboard, KB_NUM_SIZE * 0.28, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-
-    for(int i = 0; i < 12; i++){
+    for (int i = 0; i < ARRAY_SIZE(ui_dial_kb_num); i++) {
+        // Set the keyboard panel
         ui_dial_kb_num[i] = lv_obj_create(ui_dialKeyboard);
         lv_obj_clear_flag(ui_dial_kb_num[i], LV_OBJ_FLAG_SCROLLABLE);      /// Flags
         lv_obj_add_style(ui_dial_kb_num[i], &style_kb_num, LV_PART_MAIN | LV_STATE_DEFAULT);
-
+        // Set the keyboard button
         ui_dial_kb_btn[i] = lv_obj_create(ui_dial_kb_num[i]);
         lv_obj_add_flag(ui_dial_kb_btn[i], LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
         lv_obj_clear_flag(ui_dial_kb_btn[i], LV_OBJ_FLAG_SCROLLABLE);      /// Flags
         lv_obj_add_style(ui_dial_kb_btn[i], &style_kb_btn, LV_PART_MAIN | LV_STATE_DEFAULT);
-    }
-
-    for(int j = 0; j < 12; j++){
-        lv_obj_set_width(ui_dial_kb_label_top[j], LV_SIZE_CONTENT);   /// 1
-        lv_obj_set_height(ui_dial_kb_label_top[j], LV_SIZE_CONTENT);    /// 1
-        lv_obj_set_align(ui_dial_kb_label_top[j], LV_ALIGN_CENTER);
-        lv_obj_set_style_text_font(ui_dial_kb_label_top[j], &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-        if (j == 9) {//the top label should be *
-            lv_obj_set_x(ui_dial_kb_label_top[j], -1);
-            lv_obj_set_y(ui_dial_kb_label_top[j], 20);
-            lv_label_set_text(ui_dial_kb_label_top[j], "*");
-        } else if (j == 10){//the top label should be 0
-            lv_obj_set_x(ui_dial_kb_label_top[j], 0);
-            lv_obj_set_y(ui_dial_kb_label_top[j], -10);
-            lv_label_set_text(ui_dial_kb_label_top[j], "0");
-        } 
-        else if (j == 11) {//the top label should be #
-            lv_label_set_text(ui_dial_kb_label_top[j], "#");
+        // Set the keyboard label top
+        ui_dial_kb_label_top[i] = lv_obj_create(ui_dial_kb_num[i]);
+        lv_obj_set_width(ui_dial_kb_label_top[i], LV_SIZE_CONTENT);   /// 1
+        lv_obj_set_height(ui_dial_kb_label_top[i], LV_SIZE_CONTENT);    /// 1
+        lv_obj_set_align(ui_dial_kb_label_top[i], LV_ALIGN_CENTER);
+        lv_obj_set_style_text_font(ui_dial_kb_label_top[i], &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (i == 9) {//the top label should be *
+            lv_obj_set_x(ui_dial_kb_label_top[i], -1);
+            lv_obj_set_y(ui_dial_kb_label_top[i], 20);
+            lv_label_set_text(ui_dial_kb_label_top[i], "*");
+        } else if (i == 10) {//the top label should be 0
+            lv_obj_set_x(ui_dial_kb_label_top[i], 0);
+            lv_obj_set_y(ui_dial_kb_label_top[i], -10);
+            lv_label_set_text(ui_dial_kb_label_top[i], "0");
+        } else if (i == 11) {//the top label should be #
+            lv_label_set_text(ui_dial_kb_label_top[i], "#");
         } else {
             char label[2];
-            sprintf(label, "%d", j+1);
-            lv_obj_set_x(ui_dial_kb_label_top[j], 0);
-            lv_obj_set_y(ui_dial_kb_label_top[j], -10);
-            lv_label_set_text(ui_dial_kb_label_top[j], label);
+            sprintf(label, "%d", i + 1);
+            lv_obj_set_x(ui_dial_kb_label_top[i], 0);
+            lv_obj_set_y(ui_dial_kb_label_top[i], -10);
+            lv_label_set_text(ui_dial_kb_label_top[i], label);
         }
     }
-    ui_dialkbLabel1 = lv_label_create(ui_dialkbNum1);
-    lv_obj_set_width(ui_dialkbLabel1, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel1, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel1, 0);
-    lv_obj_set_y(ui_dialkbLabel1, -10);
-    lv_obj_set_align(ui_dialkbLabel1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel1, "1");
-    lv_obj_set_style_text_font(ui_dialkbLabel1, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    for (int j = 0; j < ARRAY_SIZE(ui_dial_kb_label_bottom); j++)
+    {   // Set the keyboard label top(part of, only "ABC", "DEF", "GHI", "JKL", "MNO")
+        lv_obj_set_width(ui_dial_kb_label_bottom[j], LV_SIZE_CONTENT);   /// 1
+        lv_obj_set_height(ui_dial_kb_label_bottom[j], LV_SIZE_CONTENT);    /// 1
+        lv_obj_set_x(ui_dial_kb_label_bottom[j], 0);
+        lv_obj_set_y(ui_dial_kb_label_bottom[j], 30);
+        lv_obj_set_align(ui_dial_kb_label_bottom[j], LV_ALIGN_CENTER);
+        lv_obj_set_style_text_font(ui_dial_kb_label_bottom[j], &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (j < ARRAY_SIZE(ui_dial_kb_label_bottom) - 1) {
+            ui_dial_kb_label_bottom[j] = lv_obj_create(ui_dial_kb_num[j + 1]);
+            if (j < ARRAY_SIZE(ui_dial_kb_label_bottom) - 4) {
+                char c = 'A';
+                char str[6];
+                sprintf(str, "%c %c %c", c + j, c + 1 + j, c + 1 + j);
+                lv_label_set_text(ui_dial_kb_label_bottom[j], str);
+            }
+        } else {
+            ui_dial_kb_label_bottom[j] = lv_obj_create(ui_dial_kb_num[10]);
+        }
+    }
+    // Set the specail char
+    lv_label_set_text(ui_dial_kb_label_bottom[5], "P Q R S");
+    lv_label_set_text(ui_dial_kb_label_bottom[6], "T U V");
+    lv_label_set_text(ui_dial_kb_label_bottom[7], "W X Y Z");
+    lv_label_set_text(ui_dial_kb_label_bottom[8], "+");
 
-    ui_dialkbLabel2 = lv_label_create(ui_dialkbNum2);
-    lv_obj_set_width(ui_dialkbLabel2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel2, 0);
-    lv_obj_set_y(ui_dialkbLabel2, -10);
-    lv_obj_set_align(ui_dialkbLabel2, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel2, "2");
-    lv_obj_set_style_text_font(ui_dialkbLabel2, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel3 = lv_label_create(ui_dialkbNum2);
-    lv_obj_set_width(ui_dialkbLabel3, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel3, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel3, 0);
-    lv_obj_set_y(ui_dialkbLabel3, 30);
-    lv_obj_set_align(ui_dialkbLabel3, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel3, "A B C");
-    lv_obj_set_style_text_font(ui_dialkbLabel3, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel5 = lv_label_create(ui_dialkbNum3);
-    lv_obj_set_width(ui_dialkbLabel5, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel5, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel5, 0);
-    lv_obj_set_y(ui_dialkbLabel5, -10);
-    lv_obj_set_align(ui_dialkbLabel5, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel5, "3");
-    lv_obj_set_style_text_font(ui_dialkbLabel5, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel4 = lv_label_create(ui_dialkbNum3);
-    lv_obj_set_width(ui_dialkbLabel4, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel4, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel4, 0);
-    lv_obj_set_y(ui_dialkbLabel4, 30);
-    lv_obj_set_align(ui_dialkbLabel4, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel4, "D E F");
-    lv_obj_set_style_text_font(ui_dialkbLabel4, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel7 = lv_label_create(ui_dialkbNum4);
-    lv_obj_set_width(ui_dialkbLabel7, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel7, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel7, 0);
-    lv_obj_set_y(ui_dialkbLabel7, -10);
-    lv_obj_set_align(ui_dialkbLabel7, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel7, "4");
-    lv_obj_set_style_text_font(ui_dialkbLabel7, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel6 = lv_label_create(ui_dialkbNum4);
-    lv_obj_set_width(ui_dialkbLabel6, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel6, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel6, 0);
-    lv_obj_set_y(ui_dialkbLabel6, 30);
-    lv_obj_set_align(ui_dialkbLabel6, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel6, "G H I");
-    lv_obj_set_style_text_font(ui_dialkbLabel6, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel9 = lv_label_create(ui_dialkbNum5);
-    lv_obj_set_width(ui_dialkbLabel9, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel9, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel9, 0);
-    lv_obj_set_y(ui_dialkbLabel9, -10);
-    lv_obj_set_align(ui_dialkbLabel9, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel9, "5");
-    lv_obj_set_style_text_font(ui_dialkbLabel9, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel10 = lv_label_create(ui_dialkbNum5);
-    lv_obj_set_width(ui_dialkbLabel10, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel10, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel10, 0);
-    lv_obj_set_y(ui_dialkbLabel10, 30);
-    lv_obj_set_align(ui_dialkbLabel10, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel10, "J K L");
-    lv_obj_set_style_text_font(ui_dialkbLabel10, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel11 = lv_label_create(ui_dialkbNum6);
-    lv_obj_set_width(ui_dialkbLabel11, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel11, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel11, 0);
-    lv_obj_set_y(ui_dialkbLabel11, -10);
-    lv_obj_set_align(ui_dialkbLabel11, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel11, "6");
-    lv_obj_set_style_text_font(ui_dialkbLabel11, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel12 = lv_label_create(ui_dialkbNum6);
-    lv_obj_set_width(ui_dialkbLabel12, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel12, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel12, 0);
-    lv_obj_set_y(ui_dialkbLabel12, 30);
-    lv_obj_set_align(ui_dialkbLabel12, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel12, "M N O");
-    lv_obj_set_style_text_font(ui_dialkbLabel12, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel13 = lv_label_create(ui_dialkbNum7);
-    lv_obj_set_width(ui_dialkbLabel13, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel13, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel13, 0);
-    lv_obj_set_y(ui_dialkbLabel13, -10);
-    lv_obj_set_align(ui_dialkbLabel13, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel13, "7");
-    lv_obj_set_style_text_font(ui_dialkbLabel13, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel14 = lv_label_create(ui_dialkbNum7);
-    lv_obj_set_width(ui_dialkbLabel14, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel14, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel14, 0);
-    lv_obj_set_y(ui_dialkbLabel14, 30);
-    lv_obj_set_align(ui_dialkbLabel14, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel14, "P Q R S");
-    lv_obj_set_style_text_font(ui_dialkbLabel14, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel15 = lv_label_create(ui_dialkbNum8);
-    lv_obj_set_width(ui_dialkbLabel15, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel15, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel15, 0);
-    lv_obj_set_y(ui_dialkbLabel15, -10);
-    lv_obj_set_align(ui_dialkbLabel15, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel15, "8");
-    lv_obj_set_style_text_font(ui_dialkbLabel15, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel16 = lv_label_create(ui_dialkbNum8);
-    lv_obj_set_width(ui_dialkbLabel16, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel16, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel16, 0);
-    lv_obj_set_y(ui_dialkbLabel16, 30);
-    lv_obj_set_align(ui_dialkbLabel16, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel16, "T U V");
-    lv_obj_set_style_text_font(ui_dialkbLabel16, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel17 = lv_label_create(ui_dialkbNum9);
-    lv_obj_set_width(ui_dialkbLabel17, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel17, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel17, 0);
-    lv_obj_set_y(ui_dialkbLabel17, -10);
-    lv_obj_set_align(ui_dialkbLabel17, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel17, "9");
-    lv_obj_set_style_text_font(ui_dialkbLabel17, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel18 = lv_label_create(ui_dialkbNum9);
-    lv_obj_set_width(ui_dialkbLabel18, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel18, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel18, 0);
-    lv_obj_set_y(ui_dialkbLabel18, 30);
-    lv_obj_set_align(ui_dialkbLabel18, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel18, "W X Y Z");
-    lv_obj_set_style_text_font(ui_dialkbLabel18, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel19 = lv_label_create(ui_dialkbNumx);
-    lv_obj_set_width(ui_dialkbLabel19, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel19, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel19, -1);
-    lv_obj_set_y(ui_dialkbLabel19, 20);
-    lv_obj_set_align(ui_dialkbLabel19, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel19, "*");
-    lv_obj_set_style_text_font(ui_dialkbLabel19, &ui_font_OPPOSansRegular70, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel21 = lv_label_create(ui_dialkbNum0);
-    lv_obj_set_width(ui_dialkbLabel21, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel21, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel21, 0);
-    lv_obj_set_y(ui_dialkbLabel21, -10);
-    lv_obj_set_align(ui_dialkbLabel21, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel21, "0");
-    lv_obj_set_style_text_font(ui_dialkbLabel21, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_dialkbLabel22 = lv_label_create(ui_dialkbNum0);
-    lv_obj_set_width(ui_dialkbLabel22, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel22, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_dialkbLabel22, 0);
-    lv_obj_set_y(ui_dialkbLabel22, 30);
-    lv_obj_set_align(ui_dialkbLabel22, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel22, "+");
-    lv_obj_set_style_text_font(ui_dialkbLabel22, &lv_font_montserrat_32, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    ui_dialkbLabel23 = lv_label_create(ui_dialkbNumj);
-    lv_obj_set_width(ui_dialkbLabel23, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_dialkbLabel23, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_dialkbLabel23, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_dialkbLabel23, "#");
-    lv_obj_set_style_text_font(ui_dialkbLabel23, &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
 }
 
 void ui_dial_screen_init(void)
@@ -367,20 +196,10 @@ void ui_dial_screen_init(void)
     // lv_obj_add_style(ui_dialBtnBack, &style_outline, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_dial, ui_event_dial, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_dialkbBtn0, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)0);
-    lv_obj_add_event_cb(ui_dialkbBtn1, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)1);
-    lv_obj_add_event_cb(ui_dialkbBtn2, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)2);
-    lv_obj_add_event_cb(ui_dialkbBtn3, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)3);
-    lv_obj_add_event_cb(ui_dialkbBtn4, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)4);
-    lv_obj_add_event_cb(ui_dialkbBtn5, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)5);
-    lv_obj_add_event_cb(ui_dialkbBtn6, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)6);
-    lv_obj_add_event_cb(ui_dialkbBtn7, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)7);
-    lv_obj_add_event_cb(ui_dialkbBtn8, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)8);
-    lv_obj_add_event_cb(ui_dialkbBtn9, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)9);
-    lv_obj_add_event_cb(ui_dialkbBtnx, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)10);
-    lv_obj_add_event_cb(ui_dialkbBtnj, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)11);
+    for (int i = 0; i < ARRAY_SIZE(ui_dial_kb_num); i++) {
+        lv_obj_add_event_cb(ui_dial_kb_btn[i], ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)(i + 1));
+    }
     lv_obj_add_event_cb(ui_dialBtnBack, ui_event_dialKeyboard, LV_EVENT_PRESSED, (void *)12);
-
     lv_obj_add_event_cb(ui_dialBtnAnswer, ui_event_dialBtnans, LV_EVENT_PRESSED, NULL);
 
 
