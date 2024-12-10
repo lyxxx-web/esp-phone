@@ -13,8 +13,8 @@ void ui_stateDark_screen_init(void)
     lv_obj_set_style_bg_opa(ui_stateDark, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_darkBar = lv_obj_create(ui_stateDark);
-    lv_obj_set_width(ui_darkBar, 720);
-    lv_obj_set_height(ui_darkBar, 20);
+    lv_obj_set_width(ui_darkBar, LV_HOR_RES);
+    lv_obj_set_height(ui_darkBar, LV_VER_RES * 0.05);
     lv_obj_set_align(ui_darkBar, LV_ALIGN_TOP_MID);
     lv_obj_clear_flag(ui_darkBar, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_darkBar, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -25,8 +25,6 @@ void ui_stateDark_screen_init(void)
     ui_darkTime = lv_label_create(ui_darkBar);
     lv_obj_set_width(ui_darkTime, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_darkTime, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_darkTime, -331);
-    lv_obj_set_y(ui_darkTime, 1);
     lv_obj_set_align(ui_darkTime, LV_ALIGN_CENTER);
     lv_label_set_text(ui_darkTime, "12:39");
     lv_obj_set_style_text_color(ui_darkTime, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);

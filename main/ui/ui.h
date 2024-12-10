@@ -15,8 +15,13 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 
+#define KB_NUM_SIZE LV_HOR_RES * 0.23   // Keyboard panels size
+#define KB_BTN_SIZE LV_HOR_RES * 0.21   // Keyboard bttons size
+
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay);
 void turnON_Animation(lv_obj_t * TargetObject, int delay);
+
+extern lv_style_t style_outline;
 // SCREEN: ui_stateLight
 void ui_stateLight_screen_init(void);
 extern lv_obj_t * ui_stateLight;
@@ -29,7 +34,12 @@ extern lv_obj_t * ui_lightMobile;
 void ui_dial_screen_init(void);
 void ui_event_dialKeyboard(lv_event_t * e);
 void ui_event_dialBtnans(lv_event_t * e);
+void ui_event_dial(lv_event_t *e);
 extern char dialTxt[23];
+extern lv_obj_t * ui_dial_kb_num[12];
+extern lv_obj_t * ui_dial_kb_btn[12];
+extern lv_obj_t * ui_dial_kb_label_top[12];
+extern lv_obj_t * ui_dial_kb_label_bottom[9];
 extern lv_obj_t * ui_dial;
 extern lv_obj_t * ui_dialTxt;
 extern lv_obj_t * ui_dialKeyboard;
@@ -80,6 +90,11 @@ extern lv_obj_t * ui_dialkbBtnj;
 extern lv_obj_t * ui_dialkbLabel23;
 extern lv_obj_t * ui_dialBtnAnswer;
 extern lv_obj_t * ui_dialBtnBack;
+extern lv_obj_t * ui_dialFucBtn;
+extern lv_obj_t * ui_dialFucSpa1;
+extern lv_obj_t * ui_dialFucSpa2;
+extern lv_obj_t * ui_dialFucSpa3;
+extern lv_obj_t * ui_dialSpa1;
 // SCREEN: ui_answer
 void ui_answer_screen_init(void);
 void ui_event_answer(lv_event_t * e);

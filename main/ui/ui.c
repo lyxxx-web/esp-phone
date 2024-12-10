@@ -16,6 +16,8 @@ static lv_timer_t *timer_dial = NULL;
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay);
 void turnON_Animation(lv_obj_t * TargetObject, int delay);
 
+// custom styles for all screens
+lv_style_t style_outline;
 // SCREEN: ui_stateLight
 void ui_stateLight_screen_init(void);
 lv_obj_t * ui_stateLight;
@@ -27,9 +29,14 @@ lv_obj_t * ui_lightMobile;
 
 // SCREEN: ui_dial
 void ui_dial_screen_init(void);
+void ui_event_dial(lv_event_t *e);
 void ui_event_dialKeyboard(lv_event_t * e);
 void ui_event_dialBtnans(lv_event_t * e);
 char dialTxt[23] = "";
+lv_obj_t * ui_dial_kb_num[12];
+lv_obj_t * ui_dial_kb_btn[12];
+lv_obj_t * ui_dial_kb_label_top[12];
+lv_obj_t * ui_dial_kb_label_bottom[9];
 lv_obj_t * ui_dial;
 lv_obj_t * ui_dialTxt;
 lv_obj_t * ui_dialKeyboard;
@@ -78,6 +85,11 @@ lv_obj_t * ui_dialkbLabel22;
 lv_obj_t * ui_dialkbNumj;
 lv_obj_t * ui_dialkbBtnj;
 lv_obj_t * ui_dialkbLabel23;
+lv_obj_t * ui_dialFucBtn;
+lv_obj_t * ui_dialFucSpa1;
+lv_obj_t * ui_dialFucSpa2;
+lv_obj_t * ui_dialFucSpa3;
+lv_obj_t * ui_dialSpa1;
 lv_obj_t * ui_dialBtnAnswer;
 lv_obj_t * ui_dialBtnBack;
 
@@ -269,7 +281,7 @@ void ui_event_dial(lv_event_t *e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        lv_obj_set_parent(ui_dial, ui_stateLight);
+        // lv_obj_set_parent(ui_LightBar, ui_dial);
     }
 }
 void ui_event_dialKeyboard(lv_event_t * e)
@@ -343,7 +355,7 @@ void ui_event_answer(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        lv_obj_set_parent(ui_answer, ui_stateDark);
+        // lv_obj_set_parent(ui_darkBar, ui_answer);
         timer_dial = lv_timer_create(dial_time_cb, 1000, NULL);
         dial_time_cb(timer_dial);
     }
@@ -388,7 +400,7 @@ void ui_event_oncall(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        lv_obj_set_parent(ui_oncall, ui_stateDark);
+        // lv_obj_set_parent(ui_darkBar, ui_oncall);
     }
     if (event_code == LV_EVENT_CLICKED) {
         _ui_flag_modify(ui_oncallFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -407,17 +419,24 @@ void ui_event_Image1(lv_event_t * e)
 
 ///////////////////// SCREENS ////////////////////
 
+void custom_style_init(void)
+{
+    lv_style_init(&style_outline);
+    lv_style_set_outline_color(&style_outline, lv_color_hex(0xFB7503));
+    lv_style_set_outline_width(&style_outline, 4);
+}
 void ui_init(void)
 {
     lv_disp_t * dispp = lv_disp_get_default();
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
-                                               false, LV_FONT_DEFAULT);
+                                               false, LV_FONT_DEFAULT);                                     
+    custom_style_init();
+    ui_stateDark_screen_init();// should init before others
+    ui_stateLight_screen_init();// should init before others
     lv_disp_set_rotation(dispp, LV_DISP_ROT_270);
     lv_disp_set_theme(dispp, theme);
-    ui_stateLight_screen_init();
     ui_dial_screen_init();
     ui_answer_screen_init();
-    ui_stateDark_screen_init();
     ui_oncall_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_dial);
