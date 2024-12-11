@@ -245,27 +245,27 @@ void ui_event_dialKeyboard(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     int keyboard_number = (int)lv_event_get_user_data(e);
     if (event_code == LV_EVENT_PRESSED) {
-        // ESP_LOGI(TAG, "keyboard_number is %d", keyboard_number);
+        ESP_LOGI(TAG, "keyboard_number is %d", keyboard_number);
         char buffer[23];
         strcpy(buffer, dialTxt);
         switch (keyboard_number) {
-        case 9:
+        case 10:
             snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "*");
             break;
-        case 10:
+        case 11:
             snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "0");
             break;
-        case 11:
+        case 12:
             snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "#");
             break;
-        case 12:
+        case 13:
             size_t len = strlen(dialTxt);
             if (len) {
                 dialTxt[len - 2] = '\0';
             }
             break;
         default:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %d", buffer, keyboard_number + 1);
+            snprintf(dialTxt, sizeof(dialTxt), "%s %d", buffer, keyboard_number);
             break;
         }
         lv_label_set_text(ui_dialTxt, dialTxt);
