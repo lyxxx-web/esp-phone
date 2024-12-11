@@ -14,6 +14,7 @@ extern "C" {
 
 #include "ui_helpers.h"
 #include "ui_events.h"
+#include "lv_numpad.h"
 
 #define KB_NUM_SIZE LV_HOR_RES * 0.23   // Keyboard panels size
 #define KB_BTN_SIZE LV_HOR_RES * 0.21   // Keyboard bttons size
@@ -32,24 +33,12 @@ extern lv_obj_t * ui_lightWifi;
 extern lv_obj_t * ui_lightMobile;
 // SCREEN: ui_dial
 void ui_dial_screen_init(void);
-void ui_event_dialKeyboard(lv_event_t * e);
 void ui_event_dialBtnans(lv_event_t * e);
 void ui_event_dial(lv_event_t *e);
 extern char dialTxt[23];
-extern lv_obj_t * ui_dial_kb_num[12];
-extern lv_obj_t * ui_dial_kb_btn[12];
-extern lv_obj_t * ui_dial_kb_label_top[12];
-extern lv_obj_t * ui_dial_kb_label_bottom[9];
 extern lv_obj_t * ui_dial;
-extern lv_obj_t * ui_dialTxt;
 extern lv_obj_t * ui_dialKeyboard;
 extern lv_obj_t * ui_dialBtnAnswer;
-extern lv_obj_t * ui_dialBtnBack;
-extern lv_obj_t * ui_dialFucBtn;
-extern lv_obj_t * ui_dialFucSpa1;
-extern lv_obj_t * ui_dialFucSpa2;
-extern lv_obj_t * ui_dialFucSpa3;
-extern lv_obj_t * ui_dialSpa1;
 // SCREEN: ui_answer
 void ui_answer_screen_init(void);
 void ui_event_answer(lv_event_t * e);
@@ -82,51 +71,6 @@ extern lv_obj_t * ui_ansLabelName;
 extern lv_obj_t * ui_ansLabelTime;
 extern lv_obj_t * ui_ansBtnDEC;
 extern lv_obj_t * ui_answerKeyboard;
-extern lv_obj_t * ui_ansKbNum1;
-extern lv_obj_t * ui_ansKbBtn1;
-extern lv_obj_t * ui_ansKbLabel1;
-extern lv_obj_t * ui_ansKbNum2;
-extern lv_obj_t * ui_ansKbBtn2;
-extern lv_obj_t * ui_ansKbLabel2;
-extern lv_obj_t * ui_ansKbLabel32;
-extern lv_obj_t * ui_ansKbNum3;
-extern lv_obj_t * ui_ansKbBtn3;
-extern lv_obj_t * ui_ansKbLabel3;
-extern lv_obj_t * ui_ansKbLabel34;
-extern lv_obj_t * ui_ansKbNum4;
-extern lv_obj_t * ui_ansKbBtn4;
-extern lv_obj_t * ui_ansKbLabel4;
-extern lv_obj_t * ui_ansKbLabel37;
-extern lv_obj_t * ui_ansKbNum5;
-extern lv_obj_t * ui_ansKbBtn5;
-extern lv_obj_t * ui_ansKbLabel5;
-extern lv_obj_t * ui_ansKbLabel39;
-extern lv_obj_t * ui_ansKbNum6;
-extern lv_obj_t * ui_ansKbBtn6;
-extern lv_obj_t * ui_ansKbLabel6;
-extern lv_obj_t * ui_ansKbLabel41;
-extern lv_obj_t * ui_ansKbNum7;
-extern lv_obj_t * ui_ansKbBtn7;
-extern lv_obj_t * ui_ansKbLabel7;
-extern lv_obj_t * ui_ansKbLabel44;
-extern lv_obj_t * ui_ansKbNum8;
-extern lv_obj_t * ui_ansKbBtn8;
-extern lv_obj_t * ui_ansKbLabel8;
-extern lv_obj_t * ui_ansKbLabel46;
-extern lv_obj_t * ui_ansKbNum9;
-extern lv_obj_t * ui_ansKbBtn9;
-extern lv_obj_t * ui_ansKbLabel9;
-extern lv_obj_t * ui_ansKbLabel48;
-extern lv_obj_t * ui_ansKbNumx;
-extern lv_obj_t * ui_ansKbBtnx;
-extern lv_obj_t * ui_ansKbLabelx;
-extern lv_obj_t * ui_ansKbNum0;
-extern lv_obj_t * ui_ansKbBtn0;
-extern lv_obj_t * ui_ansKbLabel0;
-extern lv_obj_t * ui_ansKbLabel51;
-extern lv_obj_t * ui_ansKbNumj;
-extern lv_obj_t * ui_ansKbBtnj;
-extern lv_obj_t * ui_ansKbLabelj;
 // SCREEN: ui_stateDark
 void ui_stateDark_screen_init(void);
 extern lv_obj_t * ui_stateDark;

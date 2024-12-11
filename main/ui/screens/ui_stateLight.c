@@ -10,7 +10,7 @@ void ui_stateLight_screen_init(void)
     ui_stateLight = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_stateLight, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_stateLight, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_stateLight, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_stateLight, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_LightBar = lv_obj_create(ui_stateLight);
     lv_obj_set_width(ui_LightBar, LV_HOR_RES);
@@ -19,7 +19,7 @@ void ui_stateLight_screen_init(void)
     lv_obj_clear_flag(ui_LightBar, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_LightBar, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_LightBar, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_LightBar, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_LightBar, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_LightBar, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_lightTime = lv_label_create(ui_LightBar);
@@ -27,7 +27,7 @@ void ui_stateLight_screen_init(void)
     lv_obj_set_height(ui_lightTime, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_lightTime, LV_ALIGN_CENTER);
     lv_label_set_text(ui_lightTime, "12:39");
-    lv_obj_set_style_text_font(ui_lightTime, &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_lightTime, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_lightBattery = lv_img_create(ui_LightBar);
     lv_img_set_src(ui_lightBattery, &ui_img_1152878764);

@@ -30,23 +30,12 @@ lv_obj_t * ui_lightMobile;
 // SCREEN: ui_dial
 void ui_dial_screen_init(void);
 void ui_event_dial(lv_event_t *e);
-void ui_event_dialKeyboard(lv_event_t * e);
 void ui_event_dialBtnans(lv_event_t * e);
 char dialTxt[23] = "";
-lv_obj_t * ui_dial_kb_num[12];
-lv_obj_t * ui_dial_kb_btn[12];
-lv_obj_t * ui_dial_kb_label_top[12];
-lv_obj_t * ui_dial_kb_label_bottom[9];
 lv_obj_t * ui_dial;
-lv_obj_t * ui_dialTxt;
 lv_obj_t * ui_dialKeyboard;
-lv_obj_t * ui_dialFucBtn;
-lv_obj_t * ui_dialFucSpa1;
-lv_obj_t * ui_dialFucSpa2;
-lv_obj_t * ui_dialFucSpa3;
-lv_obj_t * ui_dialSpa1;
 lv_obj_t * ui_dialBtnAnswer;
-lv_obj_t * ui_dialBtnBack;
+
 
 // SCREEN: ui_answer
 void ui_answer_screen_init(void);
@@ -80,51 +69,6 @@ lv_obj_t * ui_ansLabelName;
 lv_obj_t * ui_ansLabelTime;
 lv_obj_t * ui_ansBtnDEC;
 lv_obj_t * ui_answerKeyboard;
-lv_obj_t * ui_ansKbNum1;
-lv_obj_t * ui_ansKbBtn1;
-lv_obj_t * ui_ansKbLabel1;
-lv_obj_t * ui_ansKbNum2;
-lv_obj_t * ui_ansKbBtn2;
-lv_obj_t * ui_ansKbLabel2;
-lv_obj_t * ui_ansKbLabel32;
-lv_obj_t * ui_ansKbNum3;
-lv_obj_t * ui_ansKbBtn3;
-lv_obj_t * ui_ansKbLabel3;
-lv_obj_t * ui_ansKbLabel34;
-lv_obj_t * ui_ansKbNum4;
-lv_obj_t * ui_ansKbBtn4;
-lv_obj_t * ui_ansKbLabel4;
-lv_obj_t * ui_ansKbLabel37;
-lv_obj_t * ui_ansKbNum5;
-lv_obj_t * ui_ansKbBtn5;
-lv_obj_t * ui_ansKbLabel5;
-lv_obj_t * ui_ansKbLabel39;
-lv_obj_t * ui_ansKbNum6;
-lv_obj_t * ui_ansKbBtn6;
-lv_obj_t * ui_ansKbLabel6;
-lv_obj_t * ui_ansKbLabel41;
-lv_obj_t * ui_ansKbNum7;
-lv_obj_t * ui_ansKbBtn7;
-lv_obj_t * ui_ansKbLabel7;
-lv_obj_t * ui_ansKbLabel44;
-lv_obj_t * ui_ansKbNum8;
-lv_obj_t * ui_ansKbBtn8;
-lv_obj_t * ui_ansKbLabel8;
-lv_obj_t * ui_ansKbLabel46;
-lv_obj_t * ui_ansKbNum9;
-lv_obj_t * ui_ansKbBtn9;
-lv_obj_t * ui_ansKbLabel9;
-lv_obj_t * ui_ansKbLabel48;
-lv_obj_t * ui_ansKbNumx;
-lv_obj_t * ui_ansKbBtnx;
-lv_obj_t * ui_ansKbLabelx;
-lv_obj_t * ui_ansKbNum0;
-lv_obj_t * ui_ansKbBtn0;
-lv_obj_t * ui_ansKbLabel0;
-lv_obj_t * ui_ansKbLabel51;
-lv_obj_t * ui_ansKbNumj;
-lv_obj_t * ui_ansKbBtnj;
-lv_obj_t * ui_ansKbLabelj;
 
 // SCREEN: ui_stateDark
 void ui_stateDark_screen_init(void);
@@ -236,47 +180,17 @@ void ui_event_dial(lv_event_t *e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        // lv_obj_set_parent(ui_LightBar, ui_dial);
+        // lv_numpad_theme(false);
     }
 }
-void ui_event_dialKeyboard(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    int keyboard_number = (int)lv_event_get_user_data(e);
-    if (event_code == LV_EVENT_PRESSED) {
-        ESP_LOGI(TAG, "keyboard_number is %d", keyboard_number);
-        char buffer[23];
-        strcpy(buffer, dialTxt);
-        switch (keyboard_number) {
-        case 10:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "*");
-            break;
-        case 11:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "0");
-            break;
-        case 12:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %s", buffer, "#");
-            break;
-        case 13:
-            size_t len = strlen(dialTxt);
-            if (len) {
-                dialTxt[len - 2] = '\0';
-            }
-            break;
-        default:
-            snprintf(dialTxt, sizeof(dialTxt), "%s %d", buffer, keyboard_number);
-            break;
-        }
-        lv_label_set_text(ui_dialTxt, dialTxt);
-    }
-}
+
 void ui_event_dialBtnans(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_PRESSED) {
         _ui_screen_change(&ui_answer, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_answer_screen_init);
+        lv_numpad_theme(true);
     }
 }
 void ui_event_answer(lv_event_t * e)
