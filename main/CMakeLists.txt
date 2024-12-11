@@ -8,11 +8,13 @@ idf_component_register(
         "./ui/screens"
         "./ui/fonts"
         "./ui/images"
-        "./app" 
+        "./app"
+        "./custom_widgets"
 
     INCLUDE_DIRS 
         "."
         "./ui"
-        "./app" 
+        "./app"
+        "./custom_widgets"
     )
 
