@@ -44,11 +44,8 @@ void ui_event_ansBtnDec(lv_event_t * e);
 lv_obj_t * ui_answer;
 lv_obj_t * ui_ansFuc;
 lv_obj_t * ui_ansFucmute;
-void ui_event_ansBtnmute(lv_event_t * e);
 lv_obj_t * ui_ansBtnmute;
 lv_obj_t * ui_ansFucLabel1;
-lv_obj_t * ui_ansFucSlash;
-lv_obj_t * ui_slash;
 lv_obj_t * ui_ansFuckeypad;
 void ui_event_ansBtnkeypad(lv_event_t * e);
 lv_obj_t * ui_ansBtnkeypad;
@@ -69,6 +66,8 @@ lv_obj_t * ui_ansLabelName;
 lv_obj_t * ui_ansLabelTime;
 lv_obj_t * ui_ansBtnDEC;
 lv_obj_t * ui_answerKeyboard;
+lv_obj_t * ui_anskeypadEsc;
+void ui_event_ansKeypadEsc(lv_event_t * e);
 
 // SCREEN: ui_stateDark
 void ui_stateDark_screen_init(void);
@@ -94,13 +93,15 @@ lv_obj_t * ui_oncallFucMsg;
 void ui_event_Image1(lv_event_t * e);
 lv_obj_t * ui_Image1;
 lv_obj_t * ui_oncallFucLabel2;
-lv_obj_t * ui_oncallBFucAns;
+lv_obj_t * ui_oncallFucAns;
 lv_obj_t * ui_oncallBtnAns;
 lv_obj_t * ui_Label27;
-lv_obj_t * ui_oncallBFucDec;
+lv_obj_t * ui_oncallFucDec;
 lv_obj_t * ui_oncallBtnDec;
 lv_obj_t * ui_Label31;
 lv_obj_t * ui____initial_actions0;
+void ui_event_oncall_answer(lv_event_t * e);
+void ui_event_oncall_decline(lv_event_t * e);
 const lv_img_dsc_t * ui_imgset_1496073666[1] = {&ui_img_126583460};
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
@@ -178,55 +179,36 @@ void turnON_Animation(lv_obj_t * TargetObject, int delay)
 void ui_event_dial(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        // lv_numpad_theme(false);
+        lv_obj_set_parent(ui_LightBar, ui_dial);
+        lv_numpad_theme(false);
     }
 }
-
 void ui_event_dialBtnans(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if (event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_answer, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_answer_screen_init);
-        lv_numpad_theme(true);
     }
 }
 void ui_event_answer(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
+
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        // lv_obj_set_parent(ui_darkBar, ui_answer);
+        lv_obj_set_parent(ui_darkBar, ui_answer);
         timer_dial = lv_timer_create(dial_time_cb, 1000, NULL);
         dial_time_cb(timer_dial);
-    }
-    if (event_code == LV_EVENT_PRESSED) {
-        _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+        lv_numpad_theme(true);
     }
 }
 void ui_event_ansBtnDec(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if (event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_dial, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_dial_screen_init);
         lv_timer_del(timer_dial);
         dial_elapsed_sec = 0;
-    }
-}
-void ui_event_ansBtnmute(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if (event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
-        turnON_Animation(ui_slash, 0);
-    }
-    if (event_code == LV_EVENT_VALUE_CHANGED &&  !lv_obj_has_state(target, LV_STATE_CHECKED)) {
-        turnOFF_Animation(ui_slash, 0);
     }
 }
 void ui_event_ansBtnkeypad(lv_event_t * e)
@@ -235,15 +217,27 @@ void ui_event_ansBtnkeypad(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
         _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+}
+void ui_event_ansKeypadEsc(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_CLICKED) {
+        _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE); 
+        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_STATE_REMOVE);
     }
 }
 void ui_event_oncall(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        // lv_obj_set_parent(ui_darkBar, ui_oncall);
+        lv_obj_set_parent(ui_darkBar, ui_oncall);
     }
     if (event_code == LV_EVENT_CLICKED) {
         _ui_flag_modify(ui_oncallFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -253,13 +247,25 @@ void ui_event_oncall(lv_event_t * e)
 void ui_event_Image1(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
     if (event_code == LV_EVENT_PRESSED) {
         _ui_flag_modify(ui_oncallFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_oncallMsg, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
     }
 }
-
+void ui_event_oncall_answer(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_answer, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_answer_screen_init);
+    }
+}
+void ui_event_oncall_decline(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_dial, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_dial_screen_init);
+    }
+}
 ///////////////////// SCREENS ////////////////////
 
 void custom_style_init(void)
@@ -272,15 +278,15 @@ void ui_init(void)
 {
     lv_disp_t * dispp = lv_disp_get_default();
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
-                                               false, LV_FONT_DEFAULT);                                     
+                                               false, LV_FONT_DEFAULT);
     custom_style_init();
-    ui_stateDark_screen_init();// should init before others
-    ui_stateLight_screen_init();// should init before others
     lv_disp_set_rotation(dispp, LV_DISP_ROT_270);
     lv_disp_set_theme(dispp, theme);
+    ui_stateDark_screen_init();// should init before others
+    ui_stateLight_screen_init();// should init before others
     ui_dial_screen_init();
     ui_answer_screen_init();
     ui_oncall_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_dial);
+    lv_disp_load_scr(ui_oncall);
 }

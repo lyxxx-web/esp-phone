@@ -16,9 +16,6 @@ extern "C" {
 #include "ui_events.h"
 #include "lv_numpad.h"
 
-#define KB_NUM_SIZE LV_HOR_RES * 0.23   // Keyboard panels size
-#define KB_BTN_SIZE LV_HOR_RES * 0.21   // Keyboard bttons size
-
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay);
 void turnON_Animation(lv_obj_t * TargetObject, int delay);
 
@@ -46,11 +43,8 @@ void ui_event_ansBtnDec(lv_event_t * e);
 extern lv_obj_t * ui_answer;
 extern lv_obj_t * ui_ansFuc;
 extern lv_obj_t * ui_ansFucmute;
-void ui_event_ansBtnmute(lv_event_t * e);
 extern lv_obj_t * ui_ansBtnmute;
 extern lv_obj_t * ui_ansFucLabel1;
-extern lv_obj_t * ui_ansFucSlash;
-extern lv_obj_t * ui_slash;
 extern lv_obj_t * ui_ansFuckeypad;
 void ui_event_ansBtnkeypad(lv_event_t * e);
 extern lv_obj_t * ui_ansBtnkeypad;
@@ -71,6 +65,8 @@ extern lv_obj_t * ui_ansLabelName;
 extern lv_obj_t * ui_ansLabelTime;
 extern lv_obj_t * ui_ansBtnDEC;
 extern lv_obj_t * ui_answerKeyboard;
+extern lv_obj_t * ui_anskeypadEsc;
+void ui_event_ansKeypadEsc(lv_event_t * e);
 // SCREEN: ui_stateDark
 void ui_stateDark_screen_init(void);
 extern lv_obj_t * ui_stateDark;
@@ -94,13 +90,15 @@ extern lv_obj_t * ui_oncallFucMsg;
 void ui_event_Image1(lv_event_t * e);
 extern lv_obj_t * ui_Image1;
 extern lv_obj_t * ui_oncallFucLabel2;
-extern lv_obj_t * ui_oncallBFucAns;
+extern lv_obj_t * ui_oncallFucAns;
 extern lv_obj_t * ui_oncallBtnAns;
 extern lv_obj_t * ui_Label27;
-extern lv_obj_t * ui_oncallBFucDec;
+extern lv_obj_t * ui_oncallFucDec;
 extern lv_obj_t * ui_oncallBtnDec;
 extern lv_obj_t * ui_Label31;
 extern lv_obj_t * ui____initial_actions0;
+void ui_event_oncall_answer(lv_event_t * e);
+void ui_event_oncall_decline(lv_event_t * e);
 
 
 LV_IMG_DECLARE(ui_img_1152878764);    // assets/电池电量.png
@@ -122,6 +120,10 @@ LV_IMG_DECLARE(ui_img_667377057);    // assets/wifi-dark.png
 LV_IMG_DECLARE(ui_img_336861511);    // assets/信号强度1-dark.png
 LV_IMG_DECLARE(ui_img_126583460);    // assets/闹钟3.png
 LV_IMG_DECLARE(ui_img_2054516389);    // assets/信息 (1).png
+LV_IMG_DECLARE(ui_img_keypadEsc);   
+LV_IMG_DECLARE(ui_img_backspace_light);    
+LV_IMG_DECLARE(ui_img_backspace_dark);    
+
 
 
 
@@ -133,6 +135,9 @@ LV_FONT_DECLARE(ui_font_OPPOSansRegular14);
 LV_FONT_DECLARE(ui_font_OPPOSansRegular20);
 LV_FONT_DECLARE(ui_font_OPPOSansRegular34);
 LV_FONT_DECLARE(ui_font_OPPOSansRegular70);
+LV_FONT_DECLARE(ui_font_OPPOSansBoldttf70);
+LV_FONT_DECLARE(ui_font_OPPOSansBold18);
+LV_FONT_DECLARE(ui_font_OPPOSansBold60);
 
 
 

@@ -4,6 +4,7 @@
 // Project name: ESPPHONE
 
 #include "../ui.h"
+#include <stdio.h>
 
 void ui_stateLight_screen_init(void)
 {
@@ -14,28 +15,28 @@ void ui_stateLight_screen_init(void)
 
     ui_LightBar = lv_obj_create(ui_stateLight);
     lv_obj_set_width(ui_LightBar, LV_HOR_RES);
-    lv_obj_set_height(ui_LightBar, LV_VER_RES * 0.05);
+    lv_obj_set_height(ui_LightBar, 30);
     lv_obj_set_align(ui_LightBar, LV_ALIGN_TOP_MID);
     lv_obj_clear_flag(ui_LightBar, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_LightBar, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_LightBar, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_LightBar, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_LightBar, lv_color_hex(0x000000), 0);
     lv_obj_set_style_border_width(ui_LightBar, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    // lv_obj_add_style(ui_LightBar, &style_outline, 0);
 
     ui_lightTime = lv_label_create(ui_LightBar);
     lv_obj_set_width(ui_lightTime, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_lightTime, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_lightTime, LV_ALIGN_CENTER);
+    lv_obj_set_align(ui_lightTime, LV_ALIGN_LEFT_MID);
     lv_label_set_text(ui_lightTime, "12:39");
-    lv_obj_set_style_text_font(ui_lightTime, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_lightTime, &ui_font_OPPOSansBold18, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_lightBattery = lv_img_create(ui_LightBar);
     lv_img_set_src(ui_lightBattery, &ui_img_1152878764);
     lv_obj_set_width(ui_lightBattery, LV_SIZE_CONTENT);   /// 32
     lv_obj_set_height(ui_lightBattery, LV_SIZE_CONTENT);    /// 32
-    lv_obj_set_x(ui_lightBattery, 321);
-    lv_obj_set_y(ui_lightBattery, 0);
-    lv_obj_set_align(ui_lightBattery, LV_ALIGN_CENTER);
+    lv_obj_set_align(ui_lightBattery, LV_ALIGN_RIGHT_MID);
     lv_obj_add_flag(ui_lightBattery, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_clear_flag(ui_lightBattery, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_img_set_zoom(ui_lightBattery, 220);
@@ -44,9 +45,9 @@ void ui_stateLight_screen_init(void)
     lv_img_set_src(ui_lightWifi, &ui_img_1515518950);
     lv_obj_set_width(ui_lightWifi, LV_SIZE_CONTENT);   /// 32
     lv_obj_set_height(ui_lightWifi, LV_SIZE_CONTENT);    /// 32
-    lv_obj_set_x(ui_lightWifi, 274);
-    lv_obj_set_y(ui_lightWifi, -1);
-    lv_obj_set_align(ui_lightWifi, LV_ALIGN_CENTER);
+    lv_obj_set_x(ui_lightWifi, -40);
+    lv_obj_set_y(ui_lightWifi, 0);
+    lv_obj_set_align(ui_lightWifi, LV_ALIGN_RIGHT_MID);
     lv_obj_add_flag(ui_lightWifi, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_clear_flag(ui_lightWifi, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_img_set_zoom(ui_lightWifi, 200);
@@ -55,9 +56,9 @@ void ui_stateLight_screen_init(void)
     lv_img_set_src(ui_lightMobile, &ui_img_1755492943);
     lv_obj_set_width(ui_lightMobile, LV_SIZE_CONTENT);   /// 20
     lv_obj_set_height(ui_lightMobile, LV_SIZE_CONTENT);    /// 16
-    lv_obj_set_x(ui_lightMobile, 226);
+    lv_obj_set_x(ui_lightMobile, -80);
     lv_obj_set_y(ui_lightMobile, 0);
-    lv_obj_set_align(ui_lightMobile, LV_ALIGN_CENTER);
+    lv_obj_set_align(ui_lightMobile, LV_ALIGN_RIGHT_MID);
     lv_obj_add_flag(ui_lightMobile, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_clear_flag(ui_lightMobile, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 

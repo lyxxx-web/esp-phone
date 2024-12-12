@@ -17,9 +17,6 @@ void ui_dial_screen_init(void)
     ui_dial = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_dial, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    lv_obj_set_parent(ui_LightBar, ui_dial);
-    lv_obj_set_align(ui_dial, LV_ALIGN_TOP_MID);
-
     ui_dialKeyboard = lv_numpad_create(ui_dial);
     lv_obj_set_align(ui_dialKeyboard, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_y(ui_dialKeyboard, POSY_OFFSET);
@@ -38,7 +35,7 @@ void ui_dial_screen_init(void)
 
     // lv_obj_add_style(ui_dialKeyboard, &style_outline, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_add_event_cb(ui_dialBtnAnswer, ui_event_dialBtnans, LV_EVENT_PRESSED, NULL);
-
+    lv_obj_add_event_cb(ui_dialBtnAnswer, ui_event_dialBtnans, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_dial, ui_event_dial, LV_EVENT_ALL, NULL);
 
 }

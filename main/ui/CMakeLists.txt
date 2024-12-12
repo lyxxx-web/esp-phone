@@ -25,6 +25,9 @@ SET(SOURCES screens/ui_stateLight.c
     images/ui_img_336861511.c
     images/ui_img_126583460.c
     images/ui_img_2054516389.c
+    images/ui_img_backspace_dark.c
+    images/ui_img_backspace_light.c
+    imgges/ui_img_keypadEsc.c
     fonts/ui_font_DISPLAYTFB25.c
     fonts/ui_font_OPPOSansBold14.c
     fonts/ui_font_OPPOSansBold25.c
@@ -32,6 +35,9 @@ SET(SOURCES screens/ui_stateLight.c
     fonts/ui_font_OPPOSansRegular14.c
     fonts/ui_font_OPPOSansRegular20.c
     fonts/ui_font_OPPOSansRegular34.c
-    fonts/ui_font_OPPOSansRegular70.c)
+    fonts/ui_font_OPPOSansRegular70.c
+    fonts/ui_font_OPPOSansBoldttf70.c
+    fonts/ui_font_OPPOSansBold18.c
+    fonts/ui_font_OPPOSansBold60.c)
 
 add_library(ui ${SOURCES})
