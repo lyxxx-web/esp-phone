@@ -123,6 +123,7 @@ LV_IMG_DECLARE(ui_img_2054516389);    // assets/信息 (1).png
 LV_IMG_DECLARE(ui_img_keypadEsc);   
 LV_IMG_DECLARE(ui_img_backspace_light);    
 LV_IMG_DECLARE(ui_img_backspace_dark);    
+LV_IMG_DECLARE(ui_img_dial_off);    
 
 
 
@@ -131,13 +132,16 @@ LV_FONT_DECLARE(ui_font_DISPLAYTFB25);
 LV_FONT_DECLARE(ui_font_OPPOSansBold14);
 LV_FONT_DECLARE(ui_font_OPPOSansBold25);
 LV_FONT_DECLARE(ui_font_OPPOSansBold50);
+LV_FONT_DECLARE(ui_font_OPPOSansBold60);
 LV_FONT_DECLARE(ui_font_OPPOSansRegular14);
 LV_FONT_DECLARE(ui_font_OPPOSansRegular20);
 LV_FONT_DECLARE(ui_font_OPPOSansRegular34);
 LV_FONT_DECLARE(ui_font_OPPOSansRegular70);
 LV_FONT_DECLARE(ui_font_OPPOSansBoldttf70);
 LV_FONT_DECLARE(ui_font_OPPOSansBold18);
-LV_FONT_DECLARE(ui_font_OPPOSansBold60);
+LV_FONT_DECLARE(ui_font_OPPOSansBold10);
+LV_FONT_DECLARE(ui_font_OPPOSansBold30);
+LV_FONT_DECLARE(ui_font_OPPOSansBold40);
 
 
 

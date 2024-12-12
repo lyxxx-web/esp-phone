@@ -20,12 +20,13 @@
 #define KB_NUM_DISP_H   KB_NUM_SIZE
 #define KB_NUM_DISP_PAD_TOP KB_NUM_DISP_H * 0.4
 
-#define KB_NUM_SIZE_DARK LV_HOR_RES * 0.2
-#define KB_BTN_SIZE_DARK LV_HOR_RES * 0.18
-#define KB_PAL_PAD_ROW_DARK     KB_NUM_SIZE_DARK * 0.25
-#define KB_PAL_PAD_COLUMN_DARK  KB_NUM_SIZE_DARK * 0.5
+#define KB_NUM_SIZE_DARK LV_HOR_RES * 0.18
+#define KB_BTN_SIZE_DARK LV_HOR_RES * 0.15
+#define KB_PAL_PAD_ROW_DARK     KB_NUM_SIZE_DARK * 0.1
+#define KB_PAL_PAD_COLUMN_DARK  KB_NUM_SIZE_DARK * 0.8
 
 #define KB_BOTTOM_SPACE_W   KB_NUM_SIZE * 2.3 // the width of bottom empty objects(move the button the right position)
+#define KB_BOTTOM_SPACE_W_DARK   KB_NUM_SIZE_DARK * 2.5 // the width of bottom empty objects(move the button the right position)
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
@@ -38,11 +39,13 @@ static void lv_numpad_button_event(lv_event_t * e);
 static lv_style_t style_kb_num;
 static lv_style_t style_kb_btn;
 static lv_style_t style_kb_disp;
-static lv_style_t style_kb_label;
+static lv_style_t style_kb_label_top;
+static lv_style_t style_kb_label_bottom;
 
 static lv_style_t style_kb_backspace_default;
 static lv_style_t style_kb_backspace_pressed;
 static lv_style_t style_kb_panel;
+static lv_style_t style_kb_spacer_bottom;
 // static lv_coord_t keyboard_width;
 /**********************
  *   GLOBAL FUNCTIONS
@@ -68,7 +71,8 @@ void lv_numpad_theme(bool dark)
 {
     if (dark) {
         lv_style_set_bg_color(&style_kb_btn, lv_color_hex(0x2B2B2B));
-        lv_style_set_text_color(&style_kb_label, lv_color_hex(0xffffff));
+        lv_style_set_text_color(&style_kb_label_top, lv_color_hex(0xffffff));
+        lv_style_set_text_color(&style_kb_label_bottom, lv_color_hex(0xffffff));
         lv_style_set_text_color(&style_kb_disp, lv_color_hex(0xffffff));
         lv_style_set_bg_img_src(&style_kb_backspace_default, &ui_img_backspace_light);
         lv_style_set_bg_img_src(&style_kb_backspace_pressed, &ui_img_backspace_light);
@@ -80,9 +84,15 @@ void lv_numpad_theme(bool dark)
         lv_style_set_pad_row(&style_kb_panel, KB_PAL_PAD_ROW_DARK);
         lv_style_set_pad_column(&style_kb_panel, KB_PAL_PAD_COLUMN_DARK);
 
+        lv_style_set_text_font(&style_kb_label_top, &ui_font_OPPOSansBold30);
+        lv_style_set_text_font(&style_kb_label_bottom, &ui_font_OPPOSansBold10);
+
+        lv_style_set_width(&style_kb_spacer_bottom, KB_BOTTOM_SPACE_W_DARK);
+
     } else {
         lv_style_set_bg_color(&style_kb_btn, lv_color_hex(0xE5E5E5));
-        lv_style_set_text_color(&style_kb_label, lv_color_hex(0x000000));
+        lv_style_set_text_color(&style_kb_label_top, lv_color_hex(0x000000));
+        lv_style_set_text_color(&style_kb_label_bottom, lv_color_hex(0x000000));
         lv_style_set_text_color(&style_kb_disp, lv_color_hex(0x000000));
         lv_style_set_bg_img_src(&style_kb_backspace_default, &ui_img_backspace_dark);
         lv_style_set_bg_img_src(&style_kb_backspace_pressed, &ui_img_backspace_dark);
@@ -93,6 +103,11 @@ void lv_numpad_theme(bool dark)
         lv_style_set_height(&style_kb_btn, KB_BTN_SIZE);
         lv_style_set_pad_row(&style_kb_panel, KB_PAL_PAD_ROW);
         lv_style_set_pad_column(&style_kb_panel, KB_PAL_PAD_COLUMN);
+
+        lv_style_set_text_font(&style_kb_label_top, &ui_font_OPPOSansBold50);
+        lv_style_set_text_font(&style_kb_label_bottom, &ui_font_OPPOSansBold14);
+
+        lv_style_set_width(&style_kb_spacer_bottom, KB_BOTTOM_SPACE_W);
 
     }
 }
@@ -130,12 +145,26 @@ static void lv_numpad_style_init(void)
     lv_style_set_pad_top(&style_kb_disp, KB_NUM_DISP_PAD_TOP);
     lv_style_set_text_color(&style_kb_disp, lv_color_hex(0x000000));
 
-    /* Init style of numpad label*/
-    lv_style_init(&style_kb_label);
-    lv_style_set_width(&style_kb_label, LV_SIZE_CONTENT);   /// 1
-    lv_style_set_height(&style_kb_label, LV_SIZE_CONTENT); 
-    lv_style_set_align(&style_kb_label, LV_ALIGN_CENTER);
-    lv_style_set_text_color(&style_kb_label, lv_color_hex(0x000000));
+    /* Init style of numpad label, both top and bottom*/
+    lv_style_init(&style_kb_label_top);
+    lv_style_set_width(&style_kb_label_top, LV_SIZE_CONTENT);   /// 1
+    lv_style_set_height(&style_kb_label_top, LV_SIZE_CONTENT); 
+    lv_style_set_align(&style_kb_label_top, LV_ALIGN_CENTER);
+    lv_style_set_text_color(&style_kb_label_top, lv_color_hex(0x000000));
+    lv_style_set_text_font(&style_kb_label_top, &ui_font_OPPOSansBold50);
+
+    lv_style_init(&style_kb_label_bottom);
+    lv_style_set_width(&style_kb_label_bottom, LV_SIZE_CONTENT);   /// 1
+    lv_style_set_height(&style_kb_label_bottom, LV_SIZE_CONTENT); 
+    lv_style_set_align(&style_kb_label_bottom, LV_ALIGN_CENTER);
+    lv_style_set_text_color(&style_kb_label_bottom, lv_color_hex(0x000000));
+    lv_style_set_text_font(&style_kb_label_bottom, &ui_font_OPPOSansBold14);
+
+    /* Init styel of spacer bottom */
+    lv_style_init(&style_kb_spacer_bottom);
+    lv_style_set_width(&style_kb_spacer_bottom, KB_BOTTOM_SPACE_W);
+    lv_style_set_bg_opa(&style_kb_spacer_bottom, 0);
+    lv_style_set_border_width(&style_kb_spacer_bottom, 0);
 
     /* Init style of button backspace (both default and pressed) */
     lv_style_init(&style_kb_backspace_default);
@@ -209,8 +238,7 @@ static void lv_numpad_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj
         lv_obj_add_style(numpad->numpad_button[i], &style_kb_btn, LV_PART_MAIN | LV_STATE_DEFAULT);
         // Set the keyboard label top
         numpad->numpad_label_top[i] = lv_label_create(numpad->numpad_panel[i]);
-        lv_obj_add_style(numpad->numpad_label_top[i], &style_kb_label, LV_PART_MAIN | LV_STATE_DEFAULT);
-        lv_obj_set_style_text_font(numpad->numpad_label_top[i], &ui_font_OPPOSansBold50, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_add_style(numpad->numpad_label_top[i], &style_kb_label_top, LV_PART_MAIN | LV_STATE_DEFAULT);
         if (i == 9) {//the top label should be *
             lv_obj_set_x(numpad->numpad_label_top[i], 0);
             lv_obj_set_y(numpad->numpad_label_top[i], 15);
@@ -235,10 +263,9 @@ static void lv_numpad_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj
     {   // Set the keyboard label top(part of, only "ABC", "DEF", "GHI", "JKL", "MNO")
         if (j < ARRAY_SIZE(numpad->numpad_label_bottom) - 1) {
             numpad->numpad_label_bottom[j] = lv_label_create(numpad->numpad_button[j + 1]);
-            lv_obj_add_style(numpad->numpad_label_bottom[j], &style_kb_label, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_add_style(numpad->numpad_label_bottom[j], &style_kb_label_bottom, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_x(numpad->numpad_label_bottom[j], 0);
             lv_obj_set_y(numpad->numpad_label_bottom[j], 30);
-            lv_obj_set_style_text_font(numpad->numpad_label_bottom[j], &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
             if (j < ARRAY_SIZE(numpad->numpad_label_bottom) - 4) {
                 char c = 'A';
                 char str[6];
@@ -247,10 +274,9 @@ static void lv_numpad_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj
             }
         } else {
             numpad->numpad_label_bottom[j] = lv_label_create(numpad->numpad_button[10]);
-            lv_obj_add_style(numpad->numpad_label_bottom[j], &style_kb_label, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_add_style(numpad->numpad_label_bottom[j], &style_kb_label_bottom, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_x(numpad->numpad_label_bottom[j], 0);
             lv_obj_set_y(numpad->numpad_label_bottom[j], 30);
-            lv_obj_set_style_text_font(numpad->numpad_label_bottom[j], &ui_font_OPPOSansBold14, LV_PART_MAIN | LV_STATE_DEFAULT);
         }
     }
 
@@ -262,9 +288,7 @@ static void lv_numpad_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj
 
     /* Create numpad bottom spacer, move numpad_button_back to bottom right */
     numpad->numpad_spacer_buttom = lv_obj_create(obj);
-    lv_obj_set_style_width(numpad->numpad_spacer_buttom, KB_BOTTOM_SPACE_W, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(numpad->numpad_spacer_buttom, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(numpad->numpad_spacer_buttom, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_style(numpad->numpad_spacer_buttom, &style_kb_spacer_bottom, 0);
     lv_obj_clear_flag(numpad->numpad_spacer_buttom, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_clear_flag(numpad->numpad_spacer_buttom, LV_OBJ_FLAG_CLICKABLE);      /// Flags
 
@@ -283,12 +307,7 @@ static void lv_numpad_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj
         data[k].obj = numpad;
         lv_obj_add_event_cb(numpad->numpad_button[k], lv_numpad_button_event, LV_EVENT_PRESSED, data + k);
     }
-    
-    // event_data * data_backspace = (event_data *)malloc(sizeof(event_data));
-    // data_backspace->number = 13;
-    // data_backspace->obj = numpad;
-    // lv_obj_add_event_cb(numpad->numpad_button_back, lv_numpad_button_event, LV_EVENT_PRESSED, data_backspace);
-    
+     
     lv_obj_add_event_cb(numpad->numpad_button_back, lv_numpad_button_backspace_event, LV_EVENT_ALL, numpad);
 
     LV_TRACE_OBJ_CREATE("finished");
@@ -331,12 +350,6 @@ static void lv_numpad_button_event(lv_event_t * e)
             case 12:
                 snprintf(user_data->obj->numpad_disp_txt, sizeof(user_data->obj->numpad_disp_txt), "%s %s", buffer, "#");
                 break;
-            // case 13:
-            //     size_t len = strlen(user_data->obj->numpad_disp_txt);
-            //     if (len) {
-            //         user_data->obj->numpad_disp_txt[len - 2] = '\0';
-            //     }
-            //     break;
             default:
                 snprintf(user_data->obj->numpad_disp_txt, sizeof(user_data->obj->numpad_disp_txt), "%s %d", buffer, user_data->number);
                 break;

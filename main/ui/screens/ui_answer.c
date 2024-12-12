@@ -307,7 +307,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtnDEC, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnDEC, lv_color_hex(0xF44937), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtnDEC, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnDEC, &ui_img_352369578, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_ansBtnDEC, &ui_img_dial_off, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_anskeypadEsc = lv_btn_create(ui_answer);
     lv_obj_set_width(ui_anskeypadEsc, BTN_SIZE);

@@ -176,7 +176,7 @@ void ui_oncall_screen_init(void)
     lv_obj_set_style_radius(ui_oncallBtnDec, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_oncallBtnDec, lv_color_hex(0xF44937), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_oncallBtnDec, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_oncallBtnDec, &ui_img_352369578, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_oncallBtnDec, &ui_img_dial_off, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Label31 = lv_label_create(ui_oncallFucDec);
     lv_obj_set_width(ui_Label31, LV_SIZE_CONTENT);   /// 1
