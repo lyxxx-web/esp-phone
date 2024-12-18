@@ -37,6 +37,8 @@ void lv_svg_set_draw_buf(lv_obj_t * obj, lv_img_dsc_t * draw_buf);
 
 void lv_svg_set_src_data(lv_obj_t * obj, const void * src, size_t src_size);
 
+void lv_svg_set_src_file(lv_obj_t * obj, const char * src);
+
 /**********************
  * GLOBAL VARIABLES
  **********************/

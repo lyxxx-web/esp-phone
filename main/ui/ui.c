@@ -11,6 +11,7 @@
 #include "lv_svg_disp.h"
 
 #include "app_animation.h"
+#include "lv_numpad.h"
 #include "mmap_generate_svg_assets.h"
 
 
@@ -142,7 +143,7 @@ static void svg_change_cb(lv_timer_t *tmr)
     static int i = 0;
     i++;
     i = (i >= 3? 0 : i);
-    printf("i = %d\n",i);
+    // printf("i = %d\n",i);
     void *data = mmap_assets_get_mem(asset_svg, i);
     // printf("data addr: %p\n", data);
     size_t size = mmap_assets_get_size(asset_svg, i);

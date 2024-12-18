@@ -1,5 +1,5 @@
 /**
- * @file lv_svg.c
+ * @file lv_svg_disp.c
  *
  */
 
@@ -129,7 +129,7 @@ void lv_svg_set_src_data(lv_obj_t * obj, const void * src, size_t src_size)
     if (svg->tvg_anim) {
         tvg_canvas_clear(svg->tvg_canvas, true);
         tvg_animation_del(svg->tvg_anim);
-        printf("overwrite last svg\n");
+        // printf("overwrite last svg\n");
         svg->tvg_anim = tvg_animation_new();
         svg->tvg_paint = tvg_animation_get_picture(svg->tvg_anim);
         tvg_canvas_push(svg->tvg_canvas, svg->tvg_paint);

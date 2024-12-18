@@ -27,6 +27,7 @@ void print_all_tasks_stack_usage()
                  stack_high_water_mark,
                  task_status->eCurrentState);
     }
+        printf("\n");
 }
 void task_monitor(void *param)
 {

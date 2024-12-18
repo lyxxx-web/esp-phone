@@ -19,20 +19,14 @@
 
 void ui_answer_screen_init(void)
 {
-    // printf("load in answer page\n");
     ui_answer = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_answer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_answer, lv_color_hex(0x141414), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_answer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    // lv_obj_set_parent(ui_darkBar, ui_answer);
-    // lv_obj_set_align(ui_answer, LV_ALIGN_TOP_MID);
-    
     ui_ansFuc = lv_obj_create(ui_answer);
     lv_obj_set_width(ui_ansFuc, LV_HOR_RES);
     lv_obj_set_height(ui_ansFuc, LV_SIZE_CONTENT);
-    // lv_obj_set_x(ui_ansFuc, 0);
-    // lv_obj_set_y(ui_ansFuc, -50);
     lv_obj_set_align(ui_ansFuc, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_ansFuc, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_ansFuc, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER);
