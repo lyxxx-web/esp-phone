@@ -30,37 +30,11 @@ lvgl_port_cfg_t custom_cfg = {
     .timer_period_ms = 5,  
 };
 
-// struct timeval tv_now = {
-//     .tv_sec = 0,
-//     .tv_usec = 0
-// };
-
-// static void lv_timer_cb(lv_timer_t *timer)
-// {
-//     struct tm timeinfo;
-//     static char time_str[6];
-
-//     gettimeofday(&tv_now, NULL);
-//     localtime_r(&tv_now.tv_sec, &timeinfo);
-
-//     snprintf(time_str, sizeof(time_str), "%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min);
-//     lv_label_set_text(ui_darkTime, time_str);
-//     lv_label_set_text(ui_lightTime, time_str);
-    
-// }
-
-// static void ui_init_timer()
-// {
-//     lv_timer_t * timer_clock = lv_timer_create(lv_timer_cb, 1000, NULL);
-//     lv_timer_cb(timer_clock);
-// }
-
 static void app_lvgl_display(void)
 {
     bsp_display_lock(0);
 
     ui_init();
-    // ui_init_timer();
 
     bsp_display_unlock();
 }
