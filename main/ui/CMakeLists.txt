@@ -11,15 +11,6 @@ SET(SOURCES screens/ui_stateLight.c
     images/ui_img_1755492943.c
     images/ui_img_352369578.c
     images/ui_img_backspace_png.c
-    images/ui_img_988448286.c
-    images/ui_img_753335661.c
-    images/ui_img_keypad_png.c
-    images/ui_img_1143594758.c
-    images/ui_img_1817873855.c
-    images/ui_img_495558844.c
-    images/ui_img_addcontacts_png.c
-    images/ui_img_facetime_fill_png.c
-    images/ui_img_contacts_png.c
     images/ui_img_1328003813.c
     images/ui_img_667377057.c
     images/ui_img_336861511.c
@@ -29,6 +20,15 @@ SET(SOURCES screens/ui_stateLight.c
     images/ui_img_backspace_light.c
     imgges/ui_img_keypadEsc.c
     images/ui_img_dial_off.c
+    images/ui_img_mic_off.c
+    images/ui_img_mic_on.c
+    images/ui_img_keypad_on.c
+    images/ui_img_keypad_off.c
+    images/ui_img_facetime.c
+    images/ui_img_contact.c
+    images/ui_img_audio_on.c
+    images/ui_img_audio_off.c
+    images/ui_img_addcall.c
     fonts/ui_font_DISPLAYTFB25.c
     fonts/ui_font_OPPOSansBold14.c
     fonts/ui_font_OPPOSansBold25.c

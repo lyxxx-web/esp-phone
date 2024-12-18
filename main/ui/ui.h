@@ -107,15 +107,6 @@ LV_IMG_DECLARE(ui_img_1515518950);    // assets/wifi (1).png
 LV_IMG_DECLARE(ui_img_1755492943);    // assets/信号.png
 LV_IMG_DECLARE(ui_img_352369578);    // assets/拨号 (1).png
 LV_IMG_DECLARE(ui_img_backspace_png);    // assets/backspace.png
-LV_IMG_DECLARE(ui_img_988448286);    // assets/麦克风.png
-LV_IMG_DECLARE(ui_img_753335661);    // assets/麦克风-dark.png
-LV_IMG_DECLARE(ui_img_keypad_png);    // assets/keypad.png
-LV_IMG_DECLARE(ui_img_1143594758);    // assets/keypad-dark.png
-LV_IMG_DECLARE(ui_img_1817873855);    // assets/audio-off.png
-LV_IMG_DECLARE(ui_img_495558844);    // assets/audio-high.png
-LV_IMG_DECLARE(ui_img_addcontacts_png);    // assets/AddContacts.png
-LV_IMG_DECLARE(ui_img_facetime_fill_png);    // assets/facetime_fill.png
-LV_IMG_DECLARE(ui_img_contacts_png);    // assets/contacts.png
 LV_IMG_DECLARE(ui_img_1328003813);    // assets/电池电量-dark.png
 LV_IMG_DECLARE(ui_img_667377057);    // assets/wifi-dark.png
 LV_IMG_DECLARE(ui_img_336861511);    // assets/信号强度1-dark.png
@@ -125,6 +116,15 @@ LV_IMG_DECLARE(ui_img_keypadEsc);
 LV_IMG_DECLARE(ui_img_backspace_light);    
 LV_IMG_DECLARE(ui_img_backspace_dark);    
 LV_IMG_DECLARE(ui_img_dial_off);    
+LV_IMG_DECLARE(ui_img_mic_off);
+LV_IMG_DECLARE(ui_img_mic_on);
+LV_IMG_DECLARE(ui_img_keypad_on);
+LV_IMG_DECLARE(ui_img_keypad_off);
+LV_IMG_DECLARE(ui_img_audio_on);
+LV_IMG_DECLARE(ui_img_audio_off);
+LV_IMG_DECLARE(ui_img_facetime);
+LV_IMG_DECLARE(ui_img_contact);
+LV_IMG_DECLARE(ui_img_addcall);
 
 
 

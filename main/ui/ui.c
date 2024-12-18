@@ -7,14 +7,9 @@
 #include "esp_log.h"
 #include "ui.h"
 #include "ui_helpers.h"
-#include "thorvg_capi.h"
-#include "lv_svg_disp.h"
 
 #include "app_animation.h"
 #include "lv_numpad.h"
-#include "mmap_generate_svg_assets.h"
-
-
 
 static const char *TAG = "ui";
 static int dial_elapsed_sec;
@@ -138,18 +133,6 @@ static void dial_time_cb(lv_timer_t *tmr)
     dial_elapsed_sec++;
 }
 
-static void svg_change_cb(lv_timer_t *tmr)
-{
-    static int i = 0;
-    i++;
-    i = (i >= 3? 0 : i);
-    // printf("i = %d\n",i);
-    void *data = mmap_assets_get_mem(asset_svg, i);
-    // printf("data addr: %p\n", data);
-    size_t size = mmap_assets_get_size(asset_svg, i);
-    lv_svg_set_src_data(ui_mute_canvas, data, size);
-
-}
 ///////////////////// ANIMATIONS ////////////////////
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay)
 {
@@ -203,9 +186,7 @@ void ui_event_dial(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        lv_obj_set_parent(ui_LightBar, ui_dial);
         lv_numpad_theme(false);
-        timer_svg = lv_timer_create(svg_change_cb, 1000, NULL);
     }
 }
 void ui_event_dialBtnans(lv_event_t * e)
@@ -221,11 +202,9 @@ void ui_event_answer(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        lv_obj_set_parent(ui_darkBar, ui_answer);
         timer_dial = lv_timer_create(dial_time_cb, 1000, NULL);
         dial_time_cb(timer_dial);
         lv_numpad_theme(true);
-
     }
 }
 void ui_event_ansBtnDec(lv_event_t * e)
@@ -274,7 +253,6 @@ void ui_event_oncall(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
-        lv_obj_set_parent(ui_darkBar, ui_oncall);
     }
     if (event_code == LV_EVENT_CLICKED) {
         _ui_flag_modify(ui_oncallFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -319,8 +297,6 @@ void ui_init(void)
     custom_style_init();
     lv_disp_set_rotation(dispp, LV_DISP_ROT_270);
     lv_disp_set_theme(dispp, theme);
-    ui_stateDark_screen_init();// should init before others
-    ui_stateLight_screen_init();// should init before others
     ui_dial_screen_init();
     ui_answer_screen_init();
     ui_oncall_screen_init();

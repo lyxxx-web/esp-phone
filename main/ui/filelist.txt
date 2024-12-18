@@ -28,6 +28,8 @@ images/ui_img_2054516389.c
 images/ui_img_backspace_dark.c
 images/ui_img_backspace_light.c
 imgges/ui_img_keypadEsc.c
+images/ui_img_mic_off.c
+images/ui_img_mic_on.c
 fonts/ui_font_DISPLAYTFB25.c
 fonts/ui_font_OPPOSansBold14.c
 fonts/ui_font_OPPOSansBold25.c

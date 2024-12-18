@@ -8,14 +8,15 @@
 #include "lv_numpad.h"
 
 #define PANEL_SIZE  LV_HOR_RES * 0.23
-#define BTN_SIZE    LV_HOR_RES * 0.21
-#define ANS_FUC_PAD_COLUMN  PANEL_SIZE * 0.38
+#define DEC_BTN_SIZE    LV_HOR_RES * 0.21
+#define BTN_SIZE    LV_HOR_RES * 0.18
+#define ANS_FUC_PAD_COLUMN  PANEL_SIZE * 0.32
 
 #define PANEL_UP_BTN -PANEL_SIZE * 0.14
 #define PANEL_DOWN_LABEL    PANEL_SIZE * 0.51
 
-#define POSY_OFFSET -BTN_SIZE * 0.3
-#define POSX_OFFSET -(BTN_SIZE + ANS_FUC_PAD_COLUMN)
+#define POSY_OFFSET -DEC_BTN_SIZE * 0.3
+#define POSX_OFFSET -(DEC_BTN_SIZE + ANS_FUC_PAD_COLUMN)
 
 void ui_answer_screen_init(void)
 {
@@ -62,12 +63,12 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtnmute, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnmute, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtnmute, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnmute, &ui_img_988448286, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_ansBtnmute, &ui_img_mic_off, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtnmute, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnmute, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnmute, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_ansBtnmute, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_img_src(ui_ansBtnmute, &ui_img_753335661, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_img_src(ui_ansBtnmute, &ui_img_mic_on, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_ansFucLabel1 = lv_label_create(ui_ansFucmute);
     lv_obj_set_width(ui_ansFucLabel1, LV_SIZE_CONTENT);   /// 1
@@ -101,12 +102,12 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtnkeypad, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnkeypad, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtnkeypad, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnkeypad, &ui_img_keypad_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_ansBtnkeypad, &ui_img_keypad_off, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtnkeypad, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnkeypad, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnkeypad, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_ansBtnkeypad, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_img_src(ui_ansBtnkeypad, &ui_img_1143594758, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_img_src(ui_ansBtnkeypad, &ui_img_keypad_on, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_ansFucLabel2 = lv_label_create(ui_ansFuckeypad);
     lv_obj_set_width(ui_ansFucLabel2, LV_SIZE_CONTENT);   /// 1
@@ -141,12 +142,12 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtnaudio, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnaudio, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtnaudio, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnaudio, &ui_img_1817873855, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_ansBtnaudio, &ui_img_audio_off, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtnaudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnaudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnaudio, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_ansBtnaudio, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_img_src(ui_ansBtnaudio, &ui_img_495558844, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_img_src(ui_ansBtnaudio, &ui_img_audio_on, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_ansFucLabel3 = lv_label_create(ui_ansFucaudio);
     lv_obj_set_width(ui_ansFucLabel3, LV_SIZE_CONTENT);   /// 1
@@ -180,7 +181,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtncall, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtncall, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtncall, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtncall, &ui_img_addcontacts_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_ansBtncall, &ui_img_addcall, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_opa(ui_ansBtncall, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtncall, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtncall, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -217,7 +218,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtnfacetime, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnfacetime, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtnfacetime, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnfacetime, &ui_img_facetime_fill_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_ansBtnfacetime, &ui_img_facetime, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_opa(ui_ansBtnfacetime, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtnfacetime, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnfacetime, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -254,7 +255,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtncontact, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtncontact, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtncontact, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtncontact, &ui_img_contacts_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_ansBtncontact, &ui_img_contact, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtncontact, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtncontact, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -292,10 +293,10 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_text_font(ui_ansLabelTime, &ui_font_OPPOSansRegular20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ansBtnDEC = lv_btn_create(ui_answer);
-    lv_obj_set_width(ui_ansBtnDEC, BTN_SIZE);
-    lv_obj_set_height(ui_ansBtnDEC, BTN_SIZE);
+    lv_obj_set_width(ui_ansBtnDEC, DEC_BTN_SIZE);
+    lv_obj_set_height(ui_ansBtnDEC, DEC_BTN_SIZE);
     lv_obj_set_align(ui_ansBtnDEC, LV_ALIGN_BOTTOM_MID);
-    lv_obj_set_y(ui_ansBtnDEC, POSY_OFFSET);
+    lv_obj_set_y(ui_ansBtnDEC, POSY_OFFSET * 2);
     lv_obj_add_flag(ui_ansBtnDEC, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_ansBtnDEC, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_ansBtnDEC, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -307,7 +308,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_width(ui_anskeypadEsc, BTN_SIZE);
     lv_obj_set_height(ui_anskeypadEsc, BTN_SIZE);
     lv_obj_set_align(ui_anskeypadEsc, LV_ALIGN_BOTTOM_MID);
-    lv_obj_set_y(ui_anskeypadEsc, POSY_OFFSET);
+    lv_obj_set_y(ui_anskeypadEsc, POSY_OFFSET * 2);
     lv_obj_set_x(ui_anskeypadEsc, POSX_OFFSET);
     lv_obj_add_flag(ui_anskeypadEsc, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_anskeypadEsc, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
@@ -325,7 +326,7 @@ void ui_answer_screen_init(void)
     lv_obj_clear_flag(ui_answerKeyboard, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_clear_flag(ui_answerKeyboard, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_align(ui_answerKeyboard, LV_ALIGN_BOTTOM_MID);
-    lv_obj_set_y(ui_answerKeyboard, POSY_OFFSET);
+    lv_obj_set_y(ui_answerKeyboard, POSY_OFFSET * 2);
     lv_obj_add_flag(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN);     /// Flags
 
     lv_obj_add_event_cb(ui_ansBtnkeypad, ui_event_ansBtnkeypad, LV_EVENT_ALL, NULL);

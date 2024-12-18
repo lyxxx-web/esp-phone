@@ -8,13 +8,11 @@
 
 #include <stdbool.h>
 #include "esp_err.h"
-#include "mmap_generate_svg_assets.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern mmap_assets_handle_t asset_svg;
 esp_err_t app_animation_start(void);
 
 #ifdef __cplusplus

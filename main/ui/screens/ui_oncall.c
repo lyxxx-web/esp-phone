@@ -66,6 +66,7 @@ void ui_oncall_screen_init(void)
     ui_oncallFuc = lv_obj_create(ui_oncall);
     lv_obj_set_width(ui_oncallFuc, LV_HOR_RES);
     lv_obj_set_height(ui_oncallFuc, LV_SIZE_CONTENT);
+    lv_obj_set_y(ui_oncallFuc, POSY_OFFSET);
     lv_obj_set_align(ui_oncallFuc, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_flex_flow(ui_oncallFuc, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_oncallFuc, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER);
@@ -91,6 +92,7 @@ void ui_oncall_screen_init(void)
     lv_obj_set_align(ui_Image7, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Image7, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_clear_flag(ui_Image7, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_img_set_zoom(ui_Image7, 200);
 
     ui_oncallFucLabel1 = lv_label_create(ui_oncallFucRemind);
     lv_obj_set_width(ui_oncallFucLabel1, LV_SIZE_CONTENT);   /// 1
@@ -117,6 +119,7 @@ void ui_oncall_screen_init(void)
     lv_obj_set_align(ui_Image1, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Image1, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_clear_flag(ui_Image1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_img_set_zoom(ui_Image1, 200);
 
     ui_oncallFucLabel2 = lv_label_create(ui_oncallFucMsg);
     lv_obj_set_width(ui_oncallFucLabel2, LV_SIZE_CONTENT);   /// 1
@@ -186,13 +189,6 @@ void ui_oncall_screen_init(void)
     lv_obj_set_style_text_color(ui_Label31, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label31, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label31, &ui_font_OPPOSansBold25, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    
-    // lv_obj_add_style(ui_oncallFuc, &style_outline, 0);
-    // lv_obj_add_style(ui_oncallFucRemind, &style_outline, 0);
-    // lv_obj_add_style(ui_oncallFucMsg, &style_outline, 0);
-    // lv_obj_add_style(ui_oncallFucAns, &style_outline, 0);
-    // lv_obj_add_style(ui_oncallFucDec, &style_outline, 0);
 
     lv_obj_add_event_cb(ui_Image1, ui_event_Image1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_oncall, ui_event_oncall, LV_EVENT_ALL, NULL);
