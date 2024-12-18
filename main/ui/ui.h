@@ -20,6 +20,8 @@ void turnOFF_Animation(lv_obj_t * TargetObject, int delay);
 void turnON_Animation(lv_obj_t * TargetObject, int delay);
 
 extern lv_style_t style_outline;
+
+extern lv_obj_t * ui_mute_canvas;
 // SCREEN: ui_stateLight
 void ui_stateLight_screen_init(void);
 extern lv_obj_t * ui_stateLight;

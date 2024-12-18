@@ -20,10 +20,10 @@
 #define KB_NUM_DISP_H   KB_NUM_SIZE
 #define KB_NUM_DISP_PAD_TOP KB_NUM_DISP_H * 0.4
 
-#define KB_NUM_SIZE_DARK LV_HOR_RES * 0.18
+#define KB_NUM_SIZE_DARK LV_HOR_RES * 0.2
 #define KB_BTN_SIZE_DARK LV_HOR_RES * 0.15
-#define KB_PAL_PAD_ROW_DARK     KB_NUM_SIZE_DARK * 0.1
-#define KB_PAL_PAD_COLUMN_DARK  KB_NUM_SIZE_DARK * 0.8
+#define KB_PAL_PAD_ROW_DARK     0
+#define KB_PAL_PAD_COLUMN_DARK  KB_NUM_SIZE_DARK * 0.5
 
 #define KB_BOTTOM_SPACE_W   KB_NUM_SIZE * 2.3 // the width of bottom empty objects(move the button the right position)
 #define KB_BOTTOM_SPACE_W_DARK   KB_NUM_SIZE_DARK * 2.5 // the width of bottom empty objects(move the button the right position)

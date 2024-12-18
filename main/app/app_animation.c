@@ -6,20 +6,25 @@
 #include <string.h>
 #include <time.h>
 #include <sys/time.h>
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-
 #include "esp_log.h"
 #include "esp_err.h"
 #include "esp_check.h"
 #include "esp_timer.h"
+#include "esp_lv_fs.h"
 #include "bsp/esp-bsp.h"
 #include "bsp/display.h"
 #include "lvgl.h"
 
 #include "app_animation.h"
 #include "ui/ui.h"
+#include "mmap_generate_svg_assets.h"
+
+static const char *TAG = "app_animation";
+
+mmap_assets_handle_t asset_svg;
+esp_lv_fs_handle_t fs_drive_handle;
 
 lvgl_port_cfg_t custom_cfg = {
     .task_priority = 4,       \
@@ -28,7 +33,37 @@ lvgl_port_cfg_t custom_cfg = {
     .task_max_sleep_ms = 500, \
     .timer_period_ms = 5,  
 };
-static const char *TAG = "app_animation";
+
+static void app_mount_mmap_fs()
+{
+    const mmap_assets_config_t config_svg = {
+        .partition_label = "svg",
+        .max_files = MMAP_SVG_ASSETS_FILES,
+        .checksum = MMAP_SVG_ASSETS_CHECKSUM,
+        .flags = {
+            .mmap_enable = true,
+            .app_bin_check = true,
+        },
+    };
+
+    mmap_assets_new(&config_svg, &asset_svg);
+    ESP_LOGI(TAG, "[%s]stored_files:%d", config_svg.partition_label, mmap_assets_get_stored_files(asset_svg));
+}
+
+static esp_err_t lv_fs_add(void)
+{
+    fs_cfg_t fs_cfg;
+    fs_cfg.fs_letter = 'A';
+    fs_cfg.fs_assets = asset_svg;
+    fs_cfg.fs_nums = MMAP_SVG_ASSETS_FILES;
+
+    esp_err_t ret = esp_lv_fs_desc_init(&fs_cfg, &fs_drive_handle);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to initialize FS");
+        return ret;
+    }
+    return ESP_OK;
+}
 
 struct timeval tv_now = {
     .tv_sec = 0,
@@ -79,6 +114,10 @@ esp_err_t app_animation_start(void)
     };
     bsp_display_start_with_config(&cfg);
     bsp_display_backlight_on();
+
+    app_mount_mmap_fs();
+
+    ESP_ERROR_CHECK(lv_fs_add());
 
     /* Add and show objects on display*/
     app_lvgl_display();

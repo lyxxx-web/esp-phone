@@ -3,10 +3,15 @@
 // LVGL version: 8.3.11
 // Project name: ESPPHONE
 
+#include <stdio.h>
+#include "esp_log.h"
 #include "ui.h"
 #include "ui_helpers.h"
-#include "esp_log.h"
-#include <stdio.h>
+#include "lv_svg_disp.h"
+#include "thorvg_capi.h"
+#include "mmap_generate_svg_assets.h"
+
+
 
 static const char *TAG = "ui";
 static int dial_elapsed_sec;
@@ -18,6 +23,7 @@ void turnON_Animation(lv_obj_t * TargetObject, int delay);
 
 // custom styles for all screens
 lv_style_t style_outline;
+lv_obj_t * ui_mute_canvas;
 // SCREEN: ui_stateLight
 void ui_stateLight_screen_init(void);
 lv_obj_t * ui_stateLight;
@@ -200,6 +206,8 @@ void ui_event_answer(lv_event_t * e)
         timer_dial = lv_timer_create(dial_time_cb, 1000, NULL);
         dial_time_cb(timer_dial);
         lv_numpad_theme(true);
+
+
     }
 }
 void ui_event_ansBtnDec(lv_event_t * e)
