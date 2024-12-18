@@ -126,6 +126,15 @@ void lv_svg_set_src_data(lv_obj_t * obj, const void * src, size_t src_size)
 {
     lv_svg_t * svg = (lv_svg_t *)obj;
 
+    if (svg->tvg_anim) {
+        tvg_canvas_clear(svg->tvg_canvas, true);
+        tvg_animation_del(svg->tvg_anim);
+        printf("overwrite last svg\n");
+        svg->tvg_anim = tvg_animation_new();
+        svg->tvg_paint = tvg_animation_get_picture(svg->tvg_anim);
+        tvg_canvas_push(svg->tvg_canvas, svg->tvg_paint);
+    }
+
     tvg_picture_load_data(svg->tvg_paint, src, src_size, "svg", true);
 
     lv_img_dsc_t *canvas_draw_buf = lv_canvas_get_img(obj);
@@ -137,9 +146,9 @@ void lv_svg_set_src_data(lv_obj_t * obj, const void * src, size_t src_size)
     tvg_canvas_draw(svg->tvg_canvas);
     tvg_canvas_sync(svg->tvg_canvas);
 #if LV_COLOR_DEPTH == 16
-    // lv_img_dsc_t *canvas_draw_buf = lv_canvas_get_img(obj);
     convert_to_rgb565((uint8_t *)canvas_draw_buf->data, canvas_draw_buf->header.w, canvas_draw_buf->header.h); 
 #endif
+    lv_obj_invalidate(obj);
 }
 
 void lv_svg_set_src_file(lv_obj_t * obj, const char * src)
@@ -148,7 +157,7 @@ void lv_svg_set_src_file(lv_obj_t * obj, const char * src)
 
     if (svg->tvg_anim) {
         tvg_canvas_clear(svg->tvg_canvas, true);
-        // tvg_animation_del(svg->tvg_anim);
+        tvg_animation_del(svg->tvg_anim);
 
         svg->tvg_anim = tvg_animation_new();
         svg->tvg_paint = tvg_animation_get_picture(svg->tvg_anim);
@@ -160,6 +169,14 @@ void lv_svg_set_src_file(lv_obj_t * obj, const char * src)
     if (canvas_draw_buf) {
         tvg_picture_set_size(svg->tvg_paint, canvas_draw_buf->header.w, canvas_draw_buf->header.h);
     }
+
+    tvg_canvas_push(svg->tvg_canvas, svg->tvg_paint);
+    tvg_canvas_draw(svg->tvg_canvas);
+    tvg_canvas_sync(svg->tvg_canvas);
+#if LV_COLOR_DEPTH == 16
+    convert_to_rgb565((uint8_t *)canvas_draw_buf->data, canvas_draw_buf->header.w, canvas_draw_buf->header.h); 
+#endif
+    lv_obj_invalidate(obj);
 }
 
 

@@ -28,7 +28,7 @@ esp_lv_fs_handle_t fs_drive_handle;
 
 lvgl_port_cfg_t custom_cfg = {
     .task_priority = 4,       \
-    .task_stack = 6000,       \
+    .task_stack = 30 * 1024,       \
     .task_affinity = -1,      \
     .task_max_sleep_ms = 500, \
     .timer_period_ms = 5,  

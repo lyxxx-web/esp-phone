@@ -13,11 +13,12 @@
 
 #include "esp_mmap_assets.h"
 
-#define MMAP_SVG_ASSETS_FILES           3
-#define MMAP_SVG_ASSETS_CHECKSUM        0x9C58
+#define MMAP_SVG_ASSETS_FILES           4
+#define MMAP_SVG_ASSETS_CHECKSUM        0xFE0B
 
 enum MMAP_SVG_ASSETS_LISTS {
     MMAP_SVG_ASSETS_1372943623_SVG = 0,        /*!< 1372943623.svg */
-    MMAP_SVG_ASSETS_MIC_SVG = 1,        /*!< mic.svg */
-    MMAP_SVG_ASSETS_MIC_OFF_SVG = 2,        /*!< mic_off.svg */
+    MMAP_SVG_ASSETS_1528966158_SVG = 1,        /*!< 1528966158.svg */
+    MMAP_SVG_ASSETS_MIC_SVG = 2,        /*!< mic.svg */
+    MMAP_SVG_ASSETS_MIC_OFF_SVG = 3,        /*!< mic_off.svg */
 };

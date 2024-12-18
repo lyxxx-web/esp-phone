@@ -7,8 +7,10 @@
 #include "esp_log.h"
 #include "ui.h"
 #include "ui_helpers.h"
-#include "lv_svg_disp.h"
 #include "thorvg_capi.h"
+#include "lv_svg_disp.h"
+
+#include "app_animation.h"
 #include "mmap_generate_svg_assets.h"
 
 
@@ -17,6 +19,7 @@ static const char *TAG = "ui";
 static int dial_elapsed_sec;
 
 static lv_timer_t *timer_dial = NULL;
+static lv_timer_t *timer_svg = NULL;
 ///////////////////// VARIABLES ////////////////////
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay);
 void turnON_Animation(lv_obj_t * TargetObject, int delay);
@@ -133,6 +136,19 @@ static void dial_time_cb(lv_timer_t *tmr)
     lv_label_set_text(ui_ansLabelTime, time_str);
     dial_elapsed_sec++;
 }
+
+static void svg_change_cb(lv_timer_t *tmr)
+{
+    static int i = 0;
+    i++;
+    i = (i >= 3? 0 : i);
+    printf("i = %d\n",i);
+    void *data = mmap_assets_get_mem(asset_svg, i);
+    // printf("data addr: %p\n", data);
+    size_t size = mmap_assets_get_size(asset_svg, i);
+    lv_svg_set_src_data(ui_mute_canvas, data, size);
+
+}
 ///////////////////// ANIMATIONS ////////////////////
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay)
 {
@@ -188,6 +204,7 @@ void ui_event_dial(lv_event_t *e)
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
         lv_obj_set_parent(ui_LightBar, ui_dial);
         lv_numpad_theme(false);
+        timer_svg = lv_timer_create(svg_change_cb, 1000, NULL);
     }
 }
 void ui_event_dialBtnans(lv_event_t * e)
@@ -206,7 +223,6 @@ void ui_event_answer(lv_event_t * e)
         timer_dial = lv_timer_create(dial_time_cb, 1000, NULL);
         dial_time_cb(timer_dial);
         lv_numpad_theme(true);
-
 
     }
 }
