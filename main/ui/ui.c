@@ -189,6 +189,7 @@ void ui_event_dialBtnans(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     if (event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_answer, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_answer_screen_init);
+        lv_numpad_text_area_clean(ui_dialKeyboard);
     }
 }
 void ui_event_answer(lv_event_t * e)
@@ -209,6 +210,16 @@ void ui_event_ansBtnDec(lv_event_t * e)
         _ui_screen_change(&ui_dial, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_dial_screen_init);
         lv_timer_del(timer_dial);
         dial_elapsed_sec = 0;
+
+        lv_numpad_text_area_clean(ui_answerKeyboard);
+        _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE); 
+        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_STATE_REMOVE);
+
+        _ui_state_modify(ui_ansBtnmute, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+        _ui_state_modify(ui_ansBtnaudio, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
     }
 }
 void ui_event_ansBtnkeypad(lv_event_t * e)
@@ -226,11 +237,12 @@ void ui_event_ansKeypadEsc(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     if (event_code == LV_EVENT_CLICKED) {
+        lv_numpad_text_area_clean(ui_answerKeyboard);
         _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE); 
-        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_STATE_REMOVE);
+        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
     }
 }
 void ui_event_oncall(lv_event_t * e)

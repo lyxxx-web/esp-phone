@@ -111,6 +111,13 @@ void lv_numpad_theme(bool dark)
 
     }
 }
+
+void lv_numpad_text_area_clean(lv_obj_t * obj)
+{
+    lv_numpad_t * numpad = (lv_numpad_t *)obj;
+    numpad->numpad_disp_txt[0] = '\0';
+    lv_label_set_text(numpad->numpad_numdisp, numpad->numpad_disp_txt);
+}
 /**********************
  *   STATIC FUNCTIONS
  **********************/
