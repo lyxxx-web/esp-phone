@@ -10,7 +10,7 @@
 #define PANEL_SIZE  LV_HOR_RES * 0.23
 #define DEC_BTN_SIZE    LV_HOR_RES * 0.21
 #define BTN_SIZE    LV_HOR_RES * 0.18
-#define ANS_FUC_PAD_COLUMN  PANEL_SIZE * 0.32
+#define ANS_FUC_PAD_COLUMN  PANEL_SIZE * 0.28
 
 #define PANEL_UP_BTN -PANEL_SIZE * 0.14
 #define PANEL_DOWN_LABEL    PANEL_SIZE * 0.51
@@ -29,6 +29,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_width(ui_ansFuc, LV_HOR_RES);
     lv_obj_set_height(ui_ansFuc, LV_SIZE_CONTENT);
     lv_obj_set_align(ui_ansFuc, LV_ALIGN_CENTER);
+    lv_obj_set_y(ui_ansFuc, -POSY_OFFSET);
     lv_obj_set_flex_flow(ui_ansFuc, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_ansFuc, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_ansFuc, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
