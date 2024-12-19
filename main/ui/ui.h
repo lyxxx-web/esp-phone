@@ -14,13 +14,14 @@ extern "C" {
 
 #include "ui_helpers.h"
 #include "ui_events.h"
+#include "lv_svg_disp.h"
+#include "lv_numpad.h"
+#include "app_animation.h"
 
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay);
 void turnON_Animation(lv_obj_t * TargetObject, int delay);
 
 extern lv_style_t style_outline;
-
-extern lv_obj_t * ui_mute_canvas;
 // SCREEN: ui_stateLight
 void ui_stateLight_screen_init(void);
 extern lv_obj_t * ui_stateLight;
@@ -67,7 +68,15 @@ extern lv_obj_t * ui_ansLabelTime;
 extern lv_obj_t * ui_ansBtnDEC;
 extern lv_obj_t * ui_answerKeyboard;
 extern lv_obj_t * ui_anskeypadEsc;
+extern lv_obj_t * ui_mute_svg;
+extern lv_obj_t * ui_keypad_svg;
+extern lv_obj_t * ui_audio_svg;
+extern lv_obj_t * ui_addcall_svg;
+extern lv_obj_t * ui_facetime_svg;
+extern lv_obj_t * ui_contacts_svg;
 void ui_event_ansKeypadEsc(lv_event_t * e);
+void ui_event_ansBtnmute(lv_event_t * e);
+void ui_event_ansBtnaudio(lv_event_t * e);
 // SCREEN: ui_stateDark
 void ui_stateDark_screen_init(void);
 extern lv_obj_t * ui_stateDark;

@@ -27,8 +27,10 @@ static const char *TAG = "svg_disp";
 typedef struct {
     lv_canvas_t canvas;
     Tvg_Paint * tvg_paint;
+    Tvg_Paint * bg_paint;
     Tvg_Canvas * tvg_canvas;
     Tvg_Animation * tvg_anim;
+    uint8_t * buffer_address;
 } lv_svg_t;
 
 /**********************
@@ -37,8 +39,7 @@ typedef struct {
 static void lv_svg_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj);
 static void lv_svg_destructor(const lv_obj_class_t * class_p, lv_obj_t * obj);
 static void convert_to_rgb565(uint8_t *in, int width, int height);
-// static void anim_exec_cb(void * var, int32_t v);
-// static void svg_update(lv_svg_t * svg, int32_t v);
+static void convert_to_24bit(uint8_t *img, uint32_t px_cnt);
 
 /**********************
  *  STATIC VARIABLES
@@ -96,40 +97,29 @@ void lv_svg_resize(lv_obj_t * obj, int32_t w, int32_t h)
     tvg_picture_set_size(svg->tvg_paint, w, h);
 }
 
-void lv_svg_set_buffer(lv_obj_t * obj, int32_t w, int32_t h, void * buf)
+void lv_svg_set_size(lv_obj_t * obj, int32_t w, int32_t h)
 {
     lv_svg_t * svg = (lv_svg_t *)obj;
-
-    tvg_swcanvas_set_target(svg->tvg_canvas, buf, w, w, h, TVG_COLORSPACE_ARGB8888);
-    tvg_canvas_push(svg->tvg_canvas, svg->tvg_paint);
-    lv_canvas_set_buffer(obj, buf, w, h, LV_IMG_CF_TRUE_COLOR);
-    tvg_picture_set_size(svg->tvg_paint, w, h);
-}
-
-void lv_svg_set_draw_buf(lv_obj_t * obj, lv_img_dsc_t * draw_buf)
-{
-    if (draw_buf->header.cf != LV_IMG_CF_TRUE_COLOR) {
-        LV_LOG_WARN("The draw buf needs to have ARGB8888 color format");
-        return;
+    svg->buffer_address = NULL;
+    if (svg->buffer_address == NULL) {
+        svg->buffer_address = malloc(w * h * 4);
+        assert(svg->buffer_address);
+        tvg_swcanvas_set_target(svg->tvg_canvas, svg->buffer_address, w, w, h, TVG_COLORSPACE_ARGB8888);
+        tvg_canvas_push(svg->tvg_canvas, svg->tvg_paint);
+        lv_canvas_set_buffer(obj, svg->buffer_address, w, h, LV_IMG_CF_TRUE_COLOR_ALPHA);
+        tvg_picture_set_size(svg->tvg_paint, w, h);
     }
-
-    lv_svg_t * svg = (lv_svg_t *)obj;
-    tvg_swcanvas_set_target(svg->tvg_canvas, (void *)draw_buf->data, draw_buf->header.w,
-                            draw_buf->header.w, draw_buf->header.h, TVG_COLORSPACE_ARGB8888);
-    tvg_canvas_push(svg->tvg_canvas, svg->tvg_paint);
-    lv_canvas_set_buffer(obj, (void *)draw_buf->data,
-                         draw_buf->header.w, draw_buf->header.h, LV_IMG_CF_TRUE_COLOR);
-    tvg_picture_set_size(svg->tvg_paint, draw_buf->header.w, draw_buf->header.h);
+    lv_obj_set_size(obj, w, h);
 }
 
 void lv_svg_set_src_data(lv_obj_t * obj, const void * src, size_t src_size)
 {
     lv_svg_t * svg = (lv_svg_t *)obj;
+    lv_img_dsc_t *canvas_draw_buf = lv_canvas_get_img(obj);
 
     if (svg->tvg_anim) {
         tvg_canvas_clear(svg->tvg_canvas, true);
         tvg_animation_del(svg->tvg_anim);
-        // printf("overwrite last svg\n");
         svg->tvg_anim = tvg_animation_new();
         svg->tvg_paint = tvg_animation_get_picture(svg->tvg_anim);
         tvg_canvas_push(svg->tvg_canvas, svg->tvg_paint);
@@ -137,7 +127,6 @@ void lv_svg_set_src_data(lv_obj_t * obj, const void * src, size_t src_size)
 
     tvg_picture_load_data(svg->tvg_paint, src, src_size, "svg", true);
 
-    lv_img_dsc_t *canvas_draw_buf = lv_canvas_get_img(obj);
     if (canvas_draw_buf) {
         tvg_picture_set_size(svg->tvg_paint, canvas_draw_buf->header.w, canvas_draw_buf->header.h);
     }
@@ -146,7 +135,7 @@ void lv_svg_set_src_data(lv_obj_t * obj, const void * src, size_t src_size)
     tvg_canvas_draw(svg->tvg_canvas);
     tvg_canvas_sync(svg->tvg_canvas);
 #if LV_COLOR_DEPTH == 16
-    convert_to_rgb565((uint8_t *)canvas_draw_buf->data, canvas_draw_buf->header.w, canvas_draw_buf->header.h); 
+    convert_to_24bit((uint8_t *)canvas_draw_buf->data, canvas_draw_buf->header.w * canvas_draw_buf->header.h);
 #endif
     lv_obj_invalidate(obj);
 }
@@ -174,7 +163,7 @@ void lv_svg_set_src_file(lv_obj_t * obj, const char * src)
     tvg_canvas_draw(svg->tvg_canvas);
     tvg_canvas_sync(svg->tvg_canvas);
 #if LV_COLOR_DEPTH == 16
-    convert_to_rgb565((uint8_t *)canvas_draw_buf->data, canvas_draw_buf->header.w, canvas_draw_buf->header.h); 
+    convert_to_24bit((uint8_t *)canvas_draw_buf->data, canvas_draw_buf->header.w * canvas_draw_buf->header.h); 
 #endif
     lv_obj_invalidate(obj);
 }
@@ -205,6 +194,19 @@ static void convert_to_rgb565(uint8_t *in, int width, int height)
 #else
         out[i] = (((rgb565Value) >> 8) | (((rgb565Value) & 0xFF) << 8));
 #endif
+    }
+}
+
+static void convert_to_24bit(uint8_t *img, uint32_t px_cnt)
+{
+    lv_color32_t *img_argb = (lv_color32_t *)img;
+    lv_color_t c;
+    uint32_t i;
+    for (i = 0; i < px_cnt; i++) {
+        c = lv_color_make(img_argb[i].ch.blue, img_argb[i].ch.green, img_argb[i].ch.red);
+        img[i * 3 + 2] = img_argb[i].ch.alpha;
+        img[i * 3 + 1] = c.full >> 8;
+        img[i * 3 + 0] = c.full & 0xFF;
     }
 }
 #endif

@@ -106,6 +106,7 @@ void _ui_state_modify(lv_obj_t * target, int32_t state, int value)
     }
     else if(value == _UI_MODIFY_STATE_ADD) lv_obj_add_state(target, state);
     else lv_obj_clear_state(target, state);
+    lv_event_send(target, LV_EVENT_VALUE_CHANGED, NULL);// send event to call svg change when button state changed
 }
 
 

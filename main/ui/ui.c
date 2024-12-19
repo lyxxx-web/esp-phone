@@ -20,14 +20,12 @@ static const char *TAG = "ui";
 static int dial_elapsed_sec;
 
 static lv_timer_t *timer_dial = NULL;
-static lv_timer_t *timer_svg = NULL;
 ///////////////////// VARIABLES ////////////////////
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay);
 void turnON_Animation(lv_obj_t * TargetObject, int delay);
 
 // custom styles for all screens
 lv_style_t style_outline;
-lv_obj_t * ui_mute_canvas;
 // SCREEN: ui_stateLight
 void ui_stateLight_screen_init(void);
 lv_obj_t * ui_stateLight;
@@ -77,8 +75,15 @@ lv_obj_t * ui_ansLabelTime;
 lv_obj_t * ui_ansBtnDEC;
 lv_obj_t * ui_answerKeyboard;
 lv_obj_t * ui_anskeypadEsc;
+lv_obj_t * ui_mute_svg;
+lv_obj_t * ui_keypad_svg;
+lv_obj_t * ui_audio_svg;
+lv_obj_t * ui_addcall_svg;
+lv_obj_t * ui_facetime_svg;
+lv_obj_t * ui_contacts_svg;
 void ui_event_ansKeypadEsc(lv_event_t * e);
-
+void ui_event_ansBtnmute(lv_event_t * e);
+void ui_event_ansBtnaudio(lv_event_t * e);
 // SCREEN: ui_stateDark
 void ui_stateDark_screen_init(void);
 lv_obj_t * ui_stateDark;
@@ -138,18 +143,6 @@ static void dial_time_cb(lv_timer_t *tmr)
     dial_elapsed_sec++;
 }
 
-static void svg_change_cb(lv_timer_t *tmr)
-{
-    static int i = 0;
-    i++;
-    i = (i >= 3? 0 : i);
-    // printf("i = %d\n",i);
-    void *data = mmap_assets_get_mem(asset_svg, i);
-    // printf("data addr: %p\n", data);
-    size_t size = mmap_assets_get_size(asset_svg, i);
-    lv_svg_set_src_data(ui_mute_canvas, data, size);
-
-}
 ///////////////////// ANIMATIONS ////////////////////
 void turnOFF_Animation(lv_obj_t * TargetObject, int delay)
 {
@@ -205,7 +198,6 @@ void ui_event_dial(lv_event_t *e)
     if (event_code == LV_EVENT_SCREEN_LOAD_START) {
         lv_obj_set_parent(ui_LightBar, ui_dial);
         lv_numpad_theme(false);
-        timer_svg = lv_timer_create(svg_change_cb, 1000, NULL);
     }
 }
 void ui_event_dialBtnans(lv_event_t * e)
@@ -240,22 +232,11 @@ void ui_event_ansBtnDec(lv_event_t * e)
         _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE); 
         _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_STATE_REMOVE);
 
+        _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE); 
         _ui_state_modify(ui_ansBtnmute, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
         _ui_state_modify(ui_ansBtnaudio, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-    }
-}
-void ui_event_ansBtnkeypad(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if (event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
-        _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
 void ui_event_ansKeypadEsc(lv_event_t * e)
@@ -266,8 +247,8 @@ void ui_event_ansKeypadEsc(lv_event_t * e)
         _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE); 
         _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE); 
     }
 }
 void ui_event_oncall(lv_event_t * e)
@@ -301,6 +282,66 @@ void ui_event_oncall_decline(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     if (event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_dial, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_dial_screen_init);
+    }
+}
+// the button in the answer page, change svg when button checked
+void ui_event_ansBtnkeypad(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    const void * data = NULL;
+    size_t size;
+    if (event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        // printf("set keypad on\n");
+        data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_GRID_SVG);
+        size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_GRID_SVG);
+        lv_svg_set_src_data(ui_keypad_svg, data, size);
+        _ui_flag_modify(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if (event_code == LV_EVENT_VALUE_CHANGED &&  !lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        // printf("set keypad off\n");
+        data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_GRID_OFF_SVG);
+        size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_GRID_OFF_SVG);
+        lv_svg_set_src_data(ui_keypad_svg, data, size);
+    }
+}
+void ui_event_ansBtnmute(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    const void * data = NULL;
+    size_t size;
+    if (event_code ==  LV_EVENT_VALUE_CHANGED && lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        // printf("set mic svg\n");
+        data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_MIC_SVG);
+        size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_MIC_SVG);
+        lv_svg_set_src_data(ui_mute_svg, data, size);
+    }
+    if (event_code == LV_EVENT_VALUE_CHANGED && !lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        // printf("ser mic_off svg\n");
+        data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_MIC_OFF_SVG);
+        size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_MIC_OFF_SVG);
+        lv_svg_set_src_data(ui_mute_svg, data, size);
+    }
+}
+void ui_event_ansBtnaudio(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    const void * data = NULL;
+    size_t size;
+    if (event_code ==  LV_EVENT_VALUE_CHANGED && lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_VOLUME_SVG);
+        size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_VOLUME_SVG);
+        lv_svg_set_src_data(ui_audio_svg, data, size);
+    }
+    if (event_code == LV_EVENT_VALUE_CHANGED && !lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_VOLUME_OFF_SVG);
+        size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_VOLUME_OFF_SVG);
+        lv_svg_set_src_data(ui_audio_svg, data, size);
     }
 }
 ///////////////////// SCREENS ////////////////////

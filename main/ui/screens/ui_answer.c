@@ -5,7 +5,8 @@
 
 #include <stdio.h>
 #include "../ui.h"
-#include "lv_numpad.h"
+#include "esp_mmap_assets.h"
+#include "mmap_generate_svg_assets.h"
 
 #define PANEL_SIZE  LV_HOR_RES * 0.23
 #define BTN_SIZE    LV_HOR_RES * 0.21
@@ -19,6 +20,8 @@
 
 void ui_answer_screen_init(void)
 {
+    const void * data = NULL;
+    size_t size;
     ui_answer = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_answer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_answer, lv_color_hex(0x141414), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -38,7 +41,6 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_border_width(ui_ansFuc, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_ansFuc, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_ansFuc, ANS_FUC_PAD_COLUMN, LV_PART_MAIN | LV_STATE_DEFAULT);
-    // lv_obj_add_style(ui_ansFuc, &style_outline, LV_PART_MAIN || LV_STATE_DEFAULT);
 
     ui_ansFucmute = lv_obj_create(ui_ansFuc);
     lv_obj_set_width(ui_ansFucmute, PANEL_SIZE);
@@ -62,12 +64,18 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtnmute, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnmute, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtnmute, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnmute, &ui_img_988448286, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtnmute, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnmute, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnmute, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_ansBtnmute, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_img_src(ui_ansBtnmute, &ui_img_753335661, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_clip_corner(ui_ansBtnmute, true, 0);
+
+    ui_mute_svg = lv_svg_create(ui_ansBtnmute);
+    lv_svg_set_size(ui_mute_svg, BTN_SIZE * 0.5, BTN_SIZE * 0.5);
+    data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_MIC_SVG);
+    size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_MIC_SVG);
+    lv_svg_set_src_data(ui_mute_svg, data, size);
+    lv_obj_set_align(ui_mute_svg, LV_ALIGN_CENTER);
 
     ui_ansFucLabel1 = lv_label_create(ui_ansFucmute);
     lv_obj_set_width(ui_ansFucLabel1, LV_SIZE_CONTENT);   /// 1
@@ -101,12 +109,17 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtnkeypad, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnkeypad, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtnkeypad, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnkeypad, &ui_img_keypad_png, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtnkeypad, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnkeypad, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnkeypad, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_ansBtnkeypad, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_img_src(ui_ansBtnkeypad, &ui_img_1143594758, LV_PART_MAIN | LV_STATE_CHECKED);
+
+    ui_keypad_svg = lv_svg_create(ui_ansBtnkeypad);
+    lv_svg_set_size(ui_keypad_svg, BTN_SIZE * 0.5, BTN_SIZE * 0.5);
+    data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_GRID_OFF_SVG);
+    size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_GRID_OFF_SVG);
+    lv_svg_set_src_data(ui_keypad_svg, data, size);
+    lv_obj_set_align(ui_keypad_svg, LV_ALIGN_CENTER);
 
     ui_ansFucLabel2 = lv_label_create(ui_ansFuckeypad);
     lv_obj_set_width(ui_ansFucLabel2, LV_SIZE_CONTENT);   /// 1
@@ -141,12 +154,17 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtnaudio, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnaudio, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtnaudio, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnaudio, &ui_img_1817873855, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtnaudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnaudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnaudio, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_ansBtnaudio, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_img_src(ui_ansBtnaudio, &ui_img_495558844, LV_PART_MAIN | LV_STATE_CHECKED);
+
+    ui_audio_svg = lv_svg_create(ui_ansBtnaudio);
+    lv_svg_set_size(ui_audio_svg, BTN_SIZE * 0.5, BTN_SIZE * 0.5);
+    data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_VOLUME_SVG);
+    size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_VOLUME_SVG);
+    lv_svg_set_src_data(ui_audio_svg, data, size);
+    lv_obj_set_align(ui_audio_svg, LV_ALIGN_CENTER);
 
     ui_ansFucLabel3 = lv_label_create(ui_ansFucaudio);
     lv_obj_set_width(ui_ansFucLabel3, LV_SIZE_CONTENT);   /// 1
@@ -179,11 +197,17 @@ void ui_answer_screen_init(void)
     lv_obj_clear_flag(ui_ansBtncall, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_ansBtncall, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtncall, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_ansBtncall, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtncall, &ui_img_addcontacts_png, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_opa(ui_ansBtncall, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_ansBtncall, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtncall, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtncall, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_addcall_svg = lv_svg_create(ui_ansBtncall);
+    lv_svg_set_size(ui_addcall_svg, BTN_SIZE * 0.5, BTN_SIZE * 0.5);
+    data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_USER_PLUS_SVG);
+    size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_USER_PLUS_SVG);
+    lv_svg_set_src_data(ui_addcall_svg, data, size);
+    lv_obj_set_align(ui_addcall_svg, LV_ALIGN_CENTER);
+    lv_obj_set_style_opa(ui_addcall_svg, 140, 0);
 
     ui_ansFucLabel4 = lv_label_create(ui_ansFuccall);
     lv_obj_set_width(ui_ansFucLabel4, LV_SIZE_CONTENT);   /// 1
@@ -193,7 +217,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_align(ui_ansFucLabel4, LV_ALIGN_CENTER);
     lv_label_set_text(ui_ansFucLabel4, "add call");
     lv_obj_set_style_text_color(ui_ansFucLabel4, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_ansFucLabel4, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_ansFucLabel4, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_ansFucLabel4, &ui_font_OPPOSansRegular20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ansFucfacetime = lv_obj_create(ui_ansFuc);
@@ -216,11 +240,18 @@ void ui_answer_screen_init(void)
     lv_obj_clear_flag(ui_ansBtnfacetime, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_ansBtnfacetime, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnfacetime, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_ansBtnfacetime, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtnfacetime, &ui_img_facetime_fill_png, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_opa(ui_ansBtnfacetime, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_ansBtnfacetime, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
+
     lv_obj_set_style_shadow_width(ui_ansBtnfacetime, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnfacetime, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_facetime_svg = lv_svg_create(ui_ansBtnfacetime);
+    lv_svg_set_size(ui_facetime_svg, BTN_SIZE * 0.5, BTN_SIZE * 0.5);
+    data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_VIDEO_SVG);
+    size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_VIDEO_SVG);
+    lv_svg_set_src_data(ui_facetime_svg, data, size);
+    lv_obj_set_align(ui_facetime_svg, LV_ALIGN_CENTER);
+    lv_obj_set_style_opa(ui_facetime_svg, 140, 0);
 
     ui_ansFucLabel5 = lv_label_create(ui_ansFucfacetime);
     lv_obj_set_width(ui_ansFucLabel5, LV_SIZE_CONTENT);   /// 1
@@ -230,7 +261,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_align(ui_ansFucLabel5, LV_ALIGN_CENTER);
     lv_label_set_text(ui_ansFucLabel5, "FaceTime");
     lv_obj_set_style_text_color(ui_ansFucLabel5, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_ansFucLabel5, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_ansFucLabel5, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_ansFucLabel5, &ui_font_OPPOSansRegular20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ansFuccontact = lv_obj_create(ui_ansFuc);
@@ -254,9 +285,15 @@ void ui_answer_screen_init(void)
     lv_obj_set_style_radius(ui_ansBtncontact, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtncontact, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ansBtncontact, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_ansBtncontact, &ui_img_contacts_png, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtncontact, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtncontact, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_contacts_svg = lv_svg_create(ui_ansBtncontact);
+    lv_svg_set_size(ui_contacts_svg, BTN_SIZE * 0.5, BTN_SIZE * 0.5);
+    data = mmap_assets_get_mem(asset_svg, MMAP_SVG_ASSETS_MAIL_SVG);
+    size = mmap_assets_get_size(asset_svg, MMAP_SVG_ASSETS_MAIL_SVG);
+    lv_svg_set_src_data(ui_contacts_svg, data, size);
+    lv_obj_set_align(ui_contacts_svg, LV_ALIGN_CENTER);
 
     ui_ansFucLabel6 = lv_label_create(ui_ansFuccontact);
     lv_obj_set_width(ui_ansFucLabel6, LV_SIZE_CONTENT);   /// 1
@@ -328,9 +365,11 @@ void ui_answer_screen_init(void)
     lv_obj_set_y(ui_answerKeyboard, POSY_OFFSET);
     lv_obj_add_flag(ui_answerKeyboard, LV_OBJ_FLAG_HIDDEN);     /// Flags
 
-    lv_obj_add_event_cb(ui_ansBtnkeypad, ui_event_ansBtnkeypad, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_answer, ui_event_answer, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ansBtnDEC, ui_event_ansBtnDec, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_anskeypadEsc, ui_event_ansKeypadEsc, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ansBtnkeypad, ui_event_ansBtnkeypad, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ansBtnmute, ui_event_ansBtnmute, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ansBtnaudio, ui_event_ansBtnaudio, LV_EVENT_ALL, NULL);
 
 }
