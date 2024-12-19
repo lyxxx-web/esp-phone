@@ -31,7 +31,7 @@ lv_obj_t * lv_numpad_create(lv_obj_t * parent);
 
 void lv_numpad_text_area_clean(lv_obj_t * obj);
 
-void lv_numpad_theme(bool dark);
+void lv_numpad_theme(bool smallpad);
 #endif  /*LV_USE_100ASK_2048*/
 
 #ifdef __cplusplus

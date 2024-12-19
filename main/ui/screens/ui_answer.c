@@ -180,9 +180,9 @@ void ui_answer_screen_init(void)
     lv_obj_clear_flag(ui_ansBtncall, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_ansBtncall, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtncall, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_ansBtncall, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_ansBtncall, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_src(ui_ansBtncall, &ui_img_addcall, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_opa(ui_ansBtncall, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_opa(ui_ansBtncall, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtncall, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtncall, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -194,7 +194,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_align(ui_ansFucLabel4, LV_ALIGN_CENTER);
     lv_label_set_text(ui_ansFucLabel4, "add call");
     lv_obj_set_style_text_color(ui_ansFucLabel4, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_ansFucLabel4, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_ansFucLabel4, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_ansFucLabel4, &ui_font_OPPOSansRegular20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ansFucfacetime = lv_obj_create(ui_ansFuc);
@@ -217,9 +217,9 @@ void ui_answer_screen_init(void)
     lv_obj_clear_flag(ui_ansBtnfacetime, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_ansBtnfacetime, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ansBtnfacetime, lv_color_hex(0x2B2B2B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_ansBtnfacetime, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_ansBtnfacetime, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_src(ui_ansBtnfacetime, &ui_img_facetime, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_opa(ui_ansBtnfacetime, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_opa(ui_ansBtnfacetime, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui_ansBtnfacetime, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_ansBtnfacetime, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -231,7 +231,7 @@ void ui_answer_screen_init(void)
     lv_obj_set_align(ui_ansFucLabel5, LV_ALIGN_CENTER);
     lv_label_set_text(ui_ansFucLabel5, "FaceTime");
     lv_obj_set_style_text_color(ui_ansFucLabel5, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_ansFucLabel5, PANEL_SIZE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_ansFucLabel5, 140, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_ansFucLabel5, &ui_font_OPPOSansRegular20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ansFuccontact = lv_obj_create(ui_ansFuc);

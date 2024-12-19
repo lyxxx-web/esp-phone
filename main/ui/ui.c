@@ -220,7 +220,7 @@ void ui_event_ansBtnDec(lv_event_t * e)
         _ui_flag_modify(ui_anskeypadEsc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_ansFuc, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_state_modify(ui_ansBtnkeypad, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE); 
-        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_STATE_REMOVE);
+        _ui_flag_modify(ui_ansLabelTime, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
 
         _ui_state_modify(ui_ansBtnmute, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
         _ui_state_modify(ui_ansBtnaudio, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);

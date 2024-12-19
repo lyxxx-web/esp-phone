@@ -21,7 +21,7 @@
 #define KB_NUM_DISP_PAD_TOP KB_NUM_DISP_H * 0.4
 
 #define KB_NUM_SIZE_DARK LV_HOR_RES * 0.20
-#define KB_BTN_SIZE_DARK LV_HOR_RES * 0.15
+#define KB_BTN_SIZE_DARK LV_HOR_RES * 0.17
 #define KB_PAL_PAD_ROW_DARK     0
 #define KB_PAL_PAD_COLUMN_DARK  KB_NUM_SIZE_DARK * 0.35
 
@@ -67,9 +67,9 @@ lv_obj_t * lv_numpad_create(lv_obj_t * parent)
     return obj;
 }
 
-void lv_numpad_theme(bool dark)
+void lv_numpad_theme(bool smallpad)
 {
-    if (dark) {
+    if (smallpad) {
         lv_style_set_bg_color(&style_kb_btn, lv_color_hex(0x2B2B2B));
         lv_style_set_text_color(&style_kb_label_top, lv_color_hex(0xffffff));
         lv_style_set_text_color(&style_kb_label_bottom, lv_color_hex(0xffffff));
@@ -90,12 +90,16 @@ void lv_numpad_theme(bool dark)
         lv_style_set_width(&style_kb_spacer_bottom, KB_BOTTOM_SPACE_W_DARK);
 
     } else {
-        lv_style_set_bg_color(&style_kb_btn, lv_color_hex(0xE5E5E5));
-        lv_style_set_text_color(&style_kb_label_top, lv_color_hex(0x000000));
-        lv_style_set_text_color(&style_kb_label_bottom, lv_color_hex(0x000000));
-        lv_style_set_text_color(&style_kb_disp, lv_color_hex(0x000000));
-        lv_style_set_bg_img_src(&style_kb_backspace_default, &ui_img_backspace_dark);
-        lv_style_set_bg_img_src(&style_kb_backspace_pressed, &ui_img_backspace_dark);
+        // lv_style_set_bg_color(&style_kb_btn, lv_color_hex(0xE5E5E5));
+        // lv_style_set_text_color(&style_kb_label_top, lv_color_hex(0x000000));
+        // lv_style_set_text_color(&style_kb_label_bottom, lv_color_hex(0x000000));
+        // lv_style_set_text_color(&style_kb_disp, lv_color_hex(0x000000));
+        lv_style_set_bg_color(&style_kb_btn, lv_color_hex(0x2B2B2B));
+        lv_style_set_text_color(&style_kb_label_top, lv_color_hex(0xffffff));
+        lv_style_set_text_color(&style_kb_label_bottom, lv_color_hex(0xffffff));
+        lv_style_set_text_color(&style_kb_disp, lv_color_hex(0xffffff));
+        lv_style_set_bg_img_src(&style_kb_backspace_default, &ui_img_backspace_light);
+        lv_style_set_bg_img_src(&style_kb_backspace_pressed, &ui_img_backspace_light);
 
         lv_style_set_width(&style_kb_num, KB_NUM_SIZE);
         lv_style_set_height(&style_kb_num, KB_NUM_SIZE);
@@ -142,6 +146,8 @@ static void lv_numpad_style_init(void)
     lv_style_set_radius(&style_kb_btn, 100);
     lv_style_set_bg_color(&style_kb_btn, lv_color_hex(0xE5E5E5));
     lv_style_set_bg_opa(&style_kb_btn, 255);
+    lv_style_set_shadow_width(&style_kb_btn, 0);
+    lv_style_set_shadow_spread(&style_kb_btn, 0);
 
     /* Init style of numpad text display area */
     lv_style_init(&style_kb_disp);

@@ -18,6 +18,8 @@ void ui_dial_screen_init(void)
 {
     ui_dial = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_dial, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_dial, lv_color_hex(0x141414), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_dial, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_dialKeyboard = lv_numpad_create(ui_dial);
     lv_obj_set_align(ui_dialKeyboard, LV_ALIGN_BOTTOM_MID);
